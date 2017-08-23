@@ -78,8 +78,53 @@ $app->post("/register/confirmverificationcode", function (Request $request, Resp
 
 //activity_create_password
 $app->post("/register/createpassword", function (Request $request, Response $response) {
+    //    @POST("register/createpassword")
+//    Call<WebServiceMessage> createPassword(@Field("token") String token, @Field("password") String password);
+
+});
 
 
+//activity_create_password
+$app->post("/register/createpassword", function (Request $request, Response $response) {
+
+//    @POST("profile/change")
+//    Call<WebServiceMessage> changeProfile(@Field("token") String token, @Field("fullname") String fullname, @Field("email") String email, @Field("location") String location, @Field("photo") String photo);
+
+});
+
+
+//activity_create_password
+$app->post("/register/createpassword", function (Request $request, Response $response) {
+
+//    @POST("profile/changefullname")
+//    Call<WebServiceMessage> changeFullName(@Field("token") String token, @Field("fullname") String fullname);
+
+});
+
+
+//activity_create_password
+$app->post("/register/createpassword", function (Request $request, Response $response) {
+
+//    @POST("profile/changeemail")
+//    Call<WebServiceMessage> changeEmail(@Field("token") String token, @Field("email") String email);
+
+});
+
+
+//activity_create_password
+$app->post("/register/createpassword", function (Request $request, Response $response) {
+
+//    @POST("profile/changephoto")
+//    Call<WebServiceMessage> changePhoto(@Field("token") String token, @Field("photo") String photo);
+
+});
+
+
+//activity_create_password
+$app->post("/register/createpassword", function (Request $request, Response $response) {
+
+//    @POST("profile/changelocation")
+//    Call<WebServiceMessage> changeLocation(@Field("token") String token, @Field("location") String location);
 
 });
 
