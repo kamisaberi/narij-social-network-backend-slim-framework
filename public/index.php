@@ -78,52 +78,72 @@ $app->post("/register/confirmverificationcode", function (Request $request, Resp
 
 //activity_create_password
 $app->post("/register/createpassword", function (Request $request, Response $response) {
-    //    @POST("register/createpassword")
-//    Call<WebServiceMessage> createPassword(@Field("token") String token, @Field("password") String password);
+
+    if (isTheseParametersAvailable(array('token', 'password'))) {
+
+
+    }
+});
+
+
+//activity_create_password
+$app->post("/profile/change", function (Request $request, Response $response) {
+
+    if (isTheseParametersAvailable(array('token', 'fullname', 'email', 'location', 'photo'))) {
+
+
+    }
 
 });
 
 
 //activity_create_password
-$app->post("/register/createpassword", function (Request $request, Response $response) {
+$app->post("/profile/changefullname", function (Request $request, Response $response) {
 
-//    @POST("profile/change")
-//    Call<WebServiceMessage> changeProfile(@Field("token") String token, @Field("fullname") String fullname, @Field("email") String email, @Field("location") String location, @Field("photo") String photo);
-
-});
+    if (isTheseParametersAvailable(array('token', 'fullname', 'email', 'location', 'photo'))) {
 
 
-//activity_create_password
-$app->post("/register/createpassword", function (Request $request, Response $response) {
+    }
 
-//    @POST("profile/changefullname")
 //    Call<WebServiceMessage> changeFullName(@Field("token") String token, @Field("fullname") String fullname);
 
 });
 
 
 //activity_create_password
-$app->post("/register/createpassword", function (Request $request, Response $response) {
+$app->post("/profile/changeemail", function (Request $request, Response $response) {
 
-//    @POST("profile/changeemail")
+    if (isTheseParametersAvailable(array('token', 'email'))) {
+
+
+    }
+
 //    Call<WebServiceMessage> changeEmail(@Field("token") String token, @Field("email") String email);
 
 });
 
 
 //activity_create_password
-$app->post("/register/createpassword", function (Request $request, Response $response) {
+$app->post("/profile/changephoto", function (Request $request, Response $response) {
 
-//    @POST("profile/changephoto")
+    if (isTheseParametersAvailable(array('token', 'photo'))) {
+
+
+    }
+
 //    Call<WebServiceMessage> changePhoto(@Field("token") String token, @Field("photo") String photo);
 
 });
 
 
 //activity_create_password
-$app->post("/register/createpassword", function (Request $request, Response $response) {
+$app->post("/profile/changelocation", function (Request $request, Response $response) {
 
-//    @POST("profile/changelocation")
+    if (isTheseParametersAvailable(array('token', 'location'))) {
+
+
+    }
+
 //    Call<WebServiceMessage> changeLocation(@Field("token") String token, @Field("location") String location);
 
 });
@@ -137,6 +157,34 @@ $app->post("/login", function (Request $request, Response $response) {
 
     }
 });
+
+
+//activity_login_signup
+$app->post("/profile/enterphonenumberforgotpassword", function (Request $request, Response $response) {
+
+    if (isTheseParametersAvailable(array('phone'))) {
+
+
+    }
+    //    Call<WebServiceMessage> enterPhoneNumberForgotpassword(@Field("phone") String phone);
+
+});
+
+
+//activity_login_signup
+$app->post("/profile/enteremailforgotpassword", function (Request $request, Response $response) {
+
+    if (isTheseParametersAvailable(array('email'))) {
+
+
+    }
+    //    Call<WebServiceMessage> enterEmailForgotpassword(@Field("email") String email);
+
+});
+
+
+
+
 
 
 //activity_enter_email_address_forgot_password
