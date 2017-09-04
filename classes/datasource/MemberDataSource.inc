@@ -1,7 +1,7 @@
 <?php
 
-require_once 'DataAccess.inc';
-require_once 'Member.inc';
+require_once '../dataaccess/DataAccess.inc';
+require_once '../model/Member.inc';
 
 /**
  * Created by PhpStorm.
@@ -31,8 +31,8 @@ class MemberDataSource
 
     public function enterPhoneNumber(Member $member)
     {
-        $ver = rand(10000, 99999);
-        $sql = "INSERT INTO Members ( `Phone`,`VerificationCode` ) VALUES ('{$member->getPhone()}' , '$ver')";
+        $id = 0;
+        $sql = "INSERT INTO Members ( `Phone`,`VerificationCode` ) VALUES ('{$member->getPhone()}' , '{$member->getVerificationCode()}')";
         $id = $this->da->exec($sql);
         return $id;
     }

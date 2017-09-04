@@ -5,6 +5,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 
 require '../vendor/autoload.php';
+require_once '../classes/datasource/MemberDataSource.inc';
 
 
 $app = new \Slim\App([
@@ -45,18 +46,36 @@ $app = new \Slim\App([
 //});
 
 //activity_login_signup
-$app->post("/register/enterphonenumber", function (Request $request, Response $response) {
+$app->post("/Register/EnterPhoneNumber", function (Request $request, Response $response) {
 
     if (isTheseParametersAvailable(array('phone'))) {
         $requestData = $request->getParsedBody();
+        $ver = rand(10000, 99999);
         $phone = $requestData['phone'];
+        $member = new Member();
+        $member->setPhone($phone);
+        $member->setVerificationCode($ver);
+        $mds = new MemberDataSource();
+        $mds->open();
+        $id = $mds->enterPhoneNumber($member);
+        $mds->close();
+
+        if ($id > 0) {
+            $sms = new SmsSender();
+            $res = $sms->enqueueSample($phone, "your Verification Code is $ver");
+            $response = array();
+            $response["error"] = false;
+            $response["message"] = $res;
+            //echo json_encode($response);
+            $response->getBody()->write(json_encode($response));
+        } else {
+            $response = array();
+            $response["error"] = true;
+            $response["message"] = "error";
+            $response->getBody()->write(json_encode($response));
+        }
         //$token = bin2hex(openssl_random_pseudo_bytes(64));  //PHP 7
-        $token = bin2hex(random_bytes(64));
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = $token;
-        //echo json_encode($response);
-        $response->getBody()->write(json_encode($response));
+        //$token = bin2hex(random_bytes(64));
     }
 });
 
@@ -67,7 +86,9 @@ $app->post("/register/confirmverificationcode", function (Request $request, Resp
         $requestData = $request->getParsedBody();
         $phone = $requestData['phone'];
         //$token = bin2hex(openssl_random_pseudo_bytes(64));  //PHP 7
-        $token = bin2hex(random_bytes(64));
+        //$token = bin2hex(random_bytes(64));
+
+
         $response = array();
         $response["error"] = false;
         $response["message"] = "successful";
@@ -183,10 +204,6 @@ $app->post("/profile/enteremailforgotpassword", function (Request $request, Resp
 });
 
 
-
-
-
-
 //activity_enter_email_address_forgot_password
 $app->post("/forgotpassword/enteremail", function (Request $request, Response $response) {
 
@@ -208,12 +225,20 @@ $app->post("/forgotpassword/enterphonenumber", function (Request $request, Respo
 //activity_change_password
 $app->post("/changepassword", function (Request $request, Response $response) {
 
+    if (isTheseParametersAvailable(array('token', 'password'))) {
+
+    }
+
 
 });
 
 
 //activity_confirm_phone_number
 $app->post("/confirmphonenumber", function (Request $request, Response $response) {
+
+    if (isTheseParametersAvailable(array('phone'))) {
+
+    }
 
 
 });
@@ -222,11 +247,16 @@ $app->post("/confirmphonenumber", function (Request $request, Response $response
 //activity_create_password
 $app->post("createpassword", function (Request $request, Response $response) {
 
+    if (isTheseParametersAvailable(array( 'password'))) {
+
+    }
+
 });
 
 
 //activity_add_audio_document
 $app->post("/documents/create/audio", function (Request $request, Response $response) {
+
 
 
 });
@@ -259,27 +289,231 @@ $app->post("/documents/create/video", function (Request $request, Response $resp
 //activity_profile_photo
 $app->post("/profile/get", function (Request $request, Response $response) {
 
+    if (isTheseParametersAvailable(array('token'))) {
+
+    }
+
 });
 
 $app->post("/profile/set", function (Request $request, Response $response) {
+
 
 });
 
 $app->post("/profile/set/email", function (Request $request, Response $response) {
 
+    if (isTheseParametersAvailable(array('token', 'email'))) {
+
+    }
+
 });
 
 $app->post("/profile/set/fullname", function (Request $request, Response $response) {
+
+    if (isTheseParametersAvailable(array('token', 'fullname'))) {
+
+    }
 
 });
 
 $app->post("/profile/set/location", function (Request $request, Response $response) {
 
+    if (isTheseParametersAvailable(array('token', 'location'))) {
+
+    }
+
 });
 
 $app->post("/profile/set/photo", function (Request $request, Response $response) {
+    if (isTheseParametersAvailable(array('token', 'photo'))) {
+
+    }
 
 });
+
+
+/////*visit Other page Sequence*/////
+// func : get member profile data
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+/////*Answer a friend request*/////
+// func : Get Event Logs
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+// func : Get Follow Request
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Confirm Request
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Reject Request
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+/////*Comment*/////
+// func : Get Post Details
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Send File As Comment
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Send Text as Comment
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Reply as File
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Reply as Text
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+/////*Doing Unfollow*/////
+// func : Get Account Details
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Get Following List
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Unfollow
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+
+/////*Find Friend*/////
+// func : Get Events
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Search Friends
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+/////*Follow Someone*/////
+
+//->Find Friend <-//
+
+// func : Get Member Details
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Send Follow
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+
+/////*Like*/////
+// func : Like
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+/////*Logs*/////
+// func : Get Logs
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Get Post Details
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+/////*Search*/////
+// func : Search
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Get Post Details
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+
+/////*See followers*/////
+// func : Get Followers List
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+/////*See followings*/////
+// func : Get followings List
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+/////*See Suggestions*/////
+// func : Get Events
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+// func : Get Suggestions  -- top side --
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+
+/////*See Viral*/////
+// func : Get Viral
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+// func : Get Post Details
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+/////*Share*/////
+// func : Share
+$app->post("", function (Request $request, Response $response) {
+
+});
+
+
+
 
 
 //function to check parameters
