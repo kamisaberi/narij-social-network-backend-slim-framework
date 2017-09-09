@@ -37,10 +37,45 @@ class MemberDataSource
         return $id;
     }
 
+    public function checkVerificationCode(Member $member)
+    {
+        $sql = "SELECT * FROM Members WHERE Members.Mobile = '{$member->getPhone()}' AND Members.Password = '{$member->getPassword()}' ";
+        $result = $this->da->execSelect($sql);
+        if (mysqli_num_rows($result) > 0) {
+            $sql = "UPDATE Members SET Members.Active = 1 WHERE Members.MemberId = {$result['MemberId']}";
+            $this->da->execSelect($sql);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function createPassword(Member $member)
+    {
+        $sql = "UPDATE Members SET Members.Password= '{$member->getPassword()}' WHERE Members.MemberId = {$member->getMemberId()}";
+        $this->da->execSelect($sql);
+
+    }
+
+
+
     public function getVerificationCode($phoneNumber)
     {
 
 
+    }
+
+
+    public function login(Member $member)
+    {
+        $sql = "SELECT * FROM Members WHERE Members.Mobile = '{$member->getPhone()}' AND Members.Password = '{$member->getPassword()}')";
+        $result = $this->da->execSelect($sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
