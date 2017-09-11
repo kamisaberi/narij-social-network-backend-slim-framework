@@ -17,6 +17,18 @@ class Post implements \JsonSerializable
      * @var int
      */
     private $postId;
+
+
+    /**
+     * @var string
+     */
+    private $title;
+
+
+    /**
+     * @var string
+     */
+    private $description;
     /**
      * @var MediaType
      */
@@ -41,7 +53,9 @@ class Post implements \JsonSerializable
      * @var PostCategory
      */
     private $postCategory;
-
+    /**
+     * @var array
+     */
     private $properties;
 
     /**
@@ -57,6 +71,40 @@ class Post implements \JsonSerializable
         $this->deleted = false;
         $this->postCategory = new PostCategory();
         $this->properties = array();
+        $this->title = "";
+        $this->description = "";
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 
     /**
@@ -197,6 +245,8 @@ class Post implements \JsonSerializable
      */
     function jsonSerialize()
     {
+        return get_object_vars($this);
+
         // TODO: Implement jsonSerialize() method.
     }
 }

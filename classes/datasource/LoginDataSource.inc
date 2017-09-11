@@ -1,0 +1,46 @@
+<?php
+
+require_once '../dataaccess/DataAccess.inc';
+require_once '../model/Login.inc';
+
+/**
+ * Created by PhpStorm.
+ * User: kami
+ * Date: 8/25/2017
+ * Time: 5:29 AM
+ */
+class LoginDataSource
+{
+    public $da;
+
+    function __construct()
+    {
+        $this->da = new DataAccess();
+    }
+
+    public function open()
+    {
+        $this->da->open();
+    }
+
+    public function close()
+    {
+        $this->da->close();
+    }
+
+
+    public function getMemberIdBasedOnToken($token)
+    {
+        $sql = "SELECT Member FROM Logins WHERE Logins.Token='$token' ORDER BY Logins.LoginId DESC LIMIT 1";
+        $result = $this->da->execSelect($sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                return $row["Member"];
+            }
+        } else {
+            return 0;
+        }
+    }
+
+
+}
