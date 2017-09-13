@@ -1,7 +1,7 @@
 <?php
-
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\UploadedFile;
 
 
 require '../vendor/autoload.php';
@@ -53,7 +53,7 @@ function moveUploadedFile($directory, UploadedFile $uploadedFile)
 }
 
 
-$app->post("/upload", function (Request $request,Response $response){
+$app->post("/upload", function (Request $request, Response $response) {
 
     $directory = $this->get('upload_directory');
     $uploadedFiles = $request->getUploadedFiles();
@@ -63,6 +63,32 @@ $app->post("/upload", function (Request $request,Response $response){
         $filename = moveUploadedFile($directory, $uploadedFile);
         $response->write('uploaded ' . $filename . '<br/>');
     }
+
+});
+
+
+//    @FormUrlEncoded
+//    @POST("authenticate")
+//    Call < WebServiceMessage> authenticate(@Field("token") String phone,@Field("ip") String ip);
+
+$app->post("/authenticate", function (Request $request, Response $response) {
+    require_once '../classes/datasource/LoginDataSource.inc';
+    if (isTheseParametersAvailable(array('token'))) {
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+        //$ip = $requestData['ip'];
+        $ip = $_SERVER["REMOTE_ADDR"];
+        $lds = new LoginDataSource();
+        $lds->open();
+        $res = $lds->authenticate($token, $ip);
+        $lds->close();
+
+        $response = array();
+        $response["error"] = false;
+        $response["message"] = trim($res);
+        $response->getBody()->write(json_encode($response));
+    }
+
 
 });
 
@@ -179,18 +205,29 @@ $app->post("/register/createPassword", function (Request $request, Response $res
 
 //    @FormUrlEncoded
 //    @POST("profile/get")
-//    Call < WebServiceMessage> getProfileDetail(@Field("token") String token);
+//    Call < WebServiceMessage> getProfile(@Field("token") String token, @Field("memberId") long memberId);
 
 $app->post("/profile/get", function (Request $request, Response $response) {
 
-    if (isTheseParametersAvailable(array('token'))) {
+    require_once '../classes/datasource/MemberDataSource.inc';
+    require_once '../classes/datasource/LoginDataSource.inc';
+    require_once '../classes/datasource/FollowDataSource.inc';
+    require_once '../classes/datasource/PostDataSource.inc';
 
+    if (isTheseParametersAvailable(array('token', 'memberId'))) {
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
+        $memberId = $requestData['memberId'];
+        if ($memberId == 0) {
+            $lds = new LoginDataSource();
+            $lds->open();
+            $memberId = $lds->getMemberIdBasedOnToken($token);
+            $lds->close();
+        }
         $mds = new MemberDataSource();
         $mds->open();
         $member = new Member();
-        $member = $mds->getProfileBasedOnToken($token);
+        $member = $mds->getProfile($memberId);
         $mds->close();
         $response = array();
 //        if ($member->getMemberId() > 0) {
@@ -207,7 +244,64 @@ $app->post("/profile/get", function (Request $request, Response $response) {
         $response['memberId'] = $member->getMemberId();
         $response['fullName'] = $member->getFullName();
         $response['phone'] = $member->getPhone();
-        $response['Email'] = $member->getEmail();
+        $response['email'] = $member->getEmail();
+
+        $pds = new PostDataSource();
+        $pds->open();
+        $response['postsCount'] = $pds->getMemberPostsCount($memberId);
+        $psts = $pds->getMemberPosts($memberId, false);
+        $pds->close();
+
+        $posts = array();
+        foreach ($psts as $pst) {
+            $post = array();
+            $post["postId"] = $pst->getPostId();
+            $post["title"] = $pst->getTitle();
+            $post["description"] = $pst->getDescription();
+            $post["description"] = $pst->getDescription();
+            $post["deleteTime"] = $post->getDeleteTime();
+            $post["createTime"] = $post->getCreateTime();
+            $post["editTime"] = $post->getEditTime();
+            array_push($posts, $post);
+        }
+        $response["posts"] = json_encode(array($posts));
+
+
+        $fds = new FollowDataSource();
+        $fds->open();
+        $response['followingsCount'] = $fds->getFollowingsCount($memberId);
+        $flwings = $fds->getFollowings($memberId);
+        $followings = array();
+        foreach ($flwings as $flwing) {
+            $following = array();
+            $following["followId"] = $flwing->getFollowId();
+            $following["member"] = $flwing->getMember();
+            $following["object"] = $flwing->getObject();
+            $following["objectType"] = $flwing->getObjectType();
+            $following["situation"] = $flwing->getSituation();
+            $following["time"] = $flwing->getTime();
+            array_push($followings, $following);
+        }
+        $response["followings"] = json_encode(array($followings));
+
+        $response['followersCount'] = $fds->getFollowersRequests($memberId);
+
+        $flwers = $fds->getFollowers($memberId);
+        $followers = array();
+        foreach ($flwers as $flwer) {
+            $follower = array();
+            $follower["followId"] = $flwer->getFollowId();
+            $follower["member"] = $flwer->getMember();
+            $follower["object"] = $flwer->getObject();
+            $follower["objectType"] = $flwer->getObjectType();
+            $follower["situation"] = $flwer->getSituation();
+            $follower["time"] = $flwer->getTime();
+            array_push($followers, $following);
+        }
+        $response["followers"] = json_encode(array($followers));
+
+
+        $fds->close();
         $response->getBody()->write(json_encode($response));
     }
 
@@ -660,7 +754,7 @@ $app->post("/post/get", function (Request $request, Response $response) {
         $pds = new PostDataSource();
         $pds->open();
         $post = new Post();
-        $post = $pds->getPost($postId);
+        $post = $pds->getPost($postId, true);
         $pds->close();
 
         $response = array();
@@ -668,6 +762,24 @@ $app->post("/post/get", function (Request $request, Response $response) {
         $response["createTime"] = $post->getCreateTime();
         $response["editTime"] = $post->getEditTime();
         $response["deleteTime"] = $post->getDeleteTime();
+
+        $comments = array();
+
+        foreach ($post->getComments() as $cmnt) {
+            $comment = array();
+
+            $comment["commentId"] = $cmnt->getCommentId();
+            $comment["content"] = $cmnt->getContent();
+            $comment["member"] = $cmnt->getMember();
+            $comment["time"] = $cmnt->getTime();
+            $comment["objectType"] = $cmnt->getObjectType();
+            $comment["object"] = $cmnt->getObject();
+            $comment["parent"] = $cmnt->getParent();
+            $comment["situation"] = $cmnt->getSituation();
+
+            array_push($comments, $comment);
+        }
+        $response["comments"] = json_encode(array($comments));
 
         $response->getBody()->write(json_encode($response));
     }
@@ -741,7 +853,25 @@ $app->post("/post/search", function (Request $request, Response $response) {
 $app->post("/posts/viral", function (Request $request, Response $response) {
 
     if (isTheseParametersAvailable(array('token'))) {
-
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+        $psts = array();
+        $pds = new PostDataSource();
+        $pds->open();
+        $psts = $pds->getViral();
+        $posts = array();
+        foreach ($psts as $pst) {
+            $post = array();
+            $post["postId"] = $pst->getPostId();
+            $post["title"] = $pst->getTitle();
+            $post["description"] = $pst->getDescription();
+            $post["description"] = $pst->getDescription();
+            $post["deleteTime"] = $post->getDeleteTime();
+            $post["createTime"] = $post->getCreateTime();
+            $post["editTime"] = $post->getEditTime();
+            array_push($posts, $post);
+        }
+        $response->getBody()->write(json_encode(array("posts" => $posts)));
     }
 
 });
@@ -970,7 +1100,7 @@ $app->post("/followers/reject", function (Request $request, Response $response) 
 
 //    @FormUrlEncoded
 //    @POST("followers/get/list")
-//    Call < WebServiceMessage> getFollowersList(@Field("token") String token);
+//    Call < WebServiceMessage> getFollowersList(@Field("token") String token, @Field("memberId") long memberId);
 
 $app->post("/followers/get/list", function (Request $request, Response $response) {
 
@@ -980,11 +1110,13 @@ $app->post("/followers/get/list", function (Request $request, Response $response
 
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
-        $lds = new LoginDataSource();
-        $lds->open();
-        $memberId = $lds->getMemberIdBasedOnToken($token);
-        $lds->close();
-
+        $memberId = $requestData['memberId'];
+        if ($memberId == 0) {
+            $lds = new LoginDataSource();
+            $lds->open();
+            $memberId = $lds->getMemberIdBasedOnToken($token);
+            $lds->close();
+        }
         $fds = new FollowDataSource();
         $fds->open();
         $rqusts = $fds->getFollowers($memberId);
@@ -1009,7 +1141,7 @@ $app->post("/followers/get/list", function (Request $request, Response $response
 
 //    @FormUrlEncoded
 //    @POST("followings/get/list")
-//    Call < WebServiceMessage> getFollowingsList(@Field("token") String token);
+//    Call < WebServiceMessage> getFollowingsList(@Field("token") String token, @Field("memberId") long memberId);
 
 $app->post("/followings/get/list", function (Request $request, Response $response) {
 
@@ -1019,10 +1151,13 @@ $app->post("/followings/get/list", function (Request $request, Response $respons
 
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
-        $lds = new LoginDataSource();
-        $lds->open();
-        $memberId = $lds->getMemberIdBasedOnToken($token);
-        $lds->close();
+        $memberId = $requestData['memberId'];
+        if ($memberId == 0) {
+            $lds = new LoginDataSource();
+            $lds->open();
+            $memberId = $lds->getMemberIdBasedOnToken($token);
+            $lds->close();
+        }
 
         $fds = new FollowDataSource();
         $fds->open();
@@ -1155,8 +1290,6 @@ $app->post("/followings/send/request", function (Request $request, Response $res
 $app->post("/comment/send/file", function (Request $request, Response $response) {
 
     if (isTheseParametersAvailable(array('token', 'file'))) {
-
-
 
 
     }

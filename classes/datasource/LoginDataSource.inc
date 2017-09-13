@@ -42,5 +42,23 @@ class LoginDataSource
         }
     }
 
+    public function authenticate($token, $ip)
+    {
+        $sql = "SELECT * FROM Logins WHERE Logins.Token='$token' ORDER BY LoginId DESC  LIMIT 1";
+        $result = $this->da->execSelect($sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $lastIP = $row["IP"];
+                if ($lastIP == $ip) {
+                    return "SUCCESS";
+                } else {
+                    return "IP CHANGED";
+                }
+            }
+        } else {
+            return "INVALID";
+        }
+    }
+
 
 }

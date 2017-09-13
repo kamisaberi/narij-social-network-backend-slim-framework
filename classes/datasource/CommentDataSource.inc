@@ -37,4 +37,26 @@ class CommentDataSource
         return true;
     }
 
+    public function getCommnetsByPostId($postId)
+    {
+        $sql = "SELECT * FROM Comments WHERE ObjectType='Post' AND Object='$postId' AND Situation='Allowed'";
+        $result = $this->da->execSelect($sql);
+        $comments = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $comment = new Comment();
+            $comment->setCommentId($row["CommentId"]);
+            $comment->setContent($row["Content"]);
+            $comment->setMember($row["Member"]);
+            $comment->setTime($row["Time"]);
+            $comment->setObjectType($row["ObjectType"]);
+            $comment->setObject($row["Object"]);
+            $comment->setParent($row["Parent"]);
+            $comment->setSituation($row["Situation"]);
+            $comments[] = $comment;
+        }
+
+        return $comments;
+    }
+
+
 }

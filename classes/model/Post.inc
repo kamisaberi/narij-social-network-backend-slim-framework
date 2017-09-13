@@ -59,6 +59,27 @@ class Post implements \JsonSerializable
     private $properties;
 
     /**
+     * @var array
+     */
+    private $comments;
+
+    /**
+     * @return array
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param array $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+
+    /**
      * Post constructor.
      */
     public function __construct()
@@ -71,6 +92,7 @@ class Post implements \JsonSerializable
         $this->deleted = false;
         $this->postCategory = new PostCategory();
         $this->properties = array();
+        $this->comments = array();
         $this->title = "";
         $this->description = "";
     }

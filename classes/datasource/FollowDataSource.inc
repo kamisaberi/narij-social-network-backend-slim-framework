@@ -69,6 +69,22 @@ class FollowDataSource
         return $requests;
     }
 
+    public function getFollowersCount($memberId)
+    {
+        $sql = "SELECT COUNT (*) as cnt FROM Follows WHERE Follows.ObjectType='Member' AND Follows.Object=$memberId AND Follows.Situation = 'Confirm'";
+        $result = $this->da->execSelect($sql);
+        $requests = array();
+        $cnt=0;
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $cnt= $row['cnt'];
+            }
+        }
+        return cnt;
+    }
+
+
+
     public function getFollowings($memberId)
     {
         $sql = "SELECT * FROM Follows WHERE  Follows.Member=$memberId AND Follows.Situation = 'Confirm'";
@@ -87,6 +103,20 @@ class FollowDataSource
             }
         }
         return $requests;
+    }
+
+    public function getFollowingsCount($memberId)
+    {
+        $sql = "SELECT COUNT (*) as cnt FROM Follows WHERE  Follows.Member=$memberId AND Follows.Situation = 'Confirm'";
+        $result = $this->da->execSelect($sql);
+        $requests = array();
+        $cnt = 0;
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                 $cnt = $row['cnt'];
+            }
+        }
+        return $cnt;
     }
 
     public function confirmRequest($object, $memberId)

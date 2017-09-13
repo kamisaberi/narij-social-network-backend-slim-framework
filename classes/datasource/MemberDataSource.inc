@@ -55,6 +55,26 @@ class MemberDataSource
         }
     }
 
+    public function getProfile($memberId)
+    {
+        $sql = "SELECT * FROM NARIJ_00003.Members WHERE Members.MemberId={$memberId}";
+        $result = $this->da->execSelect($sql);
+        $member = new Member();
+
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $member->setMemberId($memberId);
+                $member->setFullName($row["FullName"]);
+                $member->setPhone($row["Phone"]);
+                $member->setEmail($row["Email"]);
+                return $member;
+            }
+        } else {
+            $member->setMemberId(0);
+            return $member;
+        }
+    }
+
 
     public function updateProfile($token, Member $member)
     {
