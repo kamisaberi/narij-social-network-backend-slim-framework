@@ -1,0 +1,875 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="NARIJ_00005@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.0">
+    <root id="1"/>
+    <schema id="2" parent="1" name="NARIJ_00005">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="androidchatter"/>
+    <schema id="4" parent="1" name="cdcol"/>
+    <schema id="5" parent="1" name="data"/>
+    <schema id="6" parent="1" name="information_schema"/>
+    <schema id="7" parent="1" name="mysql"/>
+    <schema id="8" parent="1" name="NARIJ_00001"/>
+    <schema id="9" parent="1" name="NARIJ_00002"/>
+    <schema id="10" parent="1" name="NARIJ_00003"/>
+    <schema id="11" parent="1" name="NARIJ_00004"/>
+    <schema id="12" parent="1" name="Net8-01"/>
+    <schema id="13" parent="1" name="Net8-En"/>
+    <schema id="14" parent="1" name="performance_schema"/>
+    <schema id="15" parent="1" name="phpmyadmin"/>
+    <schema id="16" parent="1" name="RetExam"/>
+    <schema id="17" parent="1" name="RS1"/>
+    <schema id="18" parent="1" name="smarthom_shop"/>
+    <schema id="19" parent="1" name="test"/>
+    <schema id="20" parent="1" name="tree"/>
+    <schema id="21" parent="1" name="virtual"/>
+    <schema id="22" parent="1" name="webauth"/>
+    <table id="23" parent="2" name="CommentSituations"/>
+    <table id="24" parent="2" name="Comments"/>
+    <table id="25" parent="2" name="FollowSituations"/>
+    <table id="26" parent="2" name="Follows"/>
+    <table id="27" parent="2" name="FriendshipSituations"/>
+    <table id="28" parent="2" name="Friendships"/>
+    <table id="29" parent="2" name="Grades"/>
+    <table id="30" parent="2" name="Keywords"/>
+    <table id="31" parent="2" name="Likes"/>
+    <table id="32" parent="2" name="Logins"/>
+    <table id="33" parent="2" name="MediaTypes"/>
+    <table id="34" parent="2" name="MemberMemberTypes"/>
+    <table id="35" parent="2" name="MemberPost"/>
+    <table id="36" parent="2" name="MemberRoles"/>
+    <table id="37" parent="2" name="MemberTeam"/>
+    <table id="38" parent="2" name="MemberTypes"/>
+    <table id="39" parent="2" name="Members"/>
+    <table id="40" parent="2" name="Messages"/>
+    <table id="41" parent="2" name="ObjectTypes"/>
+    <table id="42" parent="2" name="Options"/>
+    <table id="43" parent="2" name="PostCategories"/>
+    <table id="44" parent="2" name="PostTag"/>
+    <table id="45" parent="2" name="Posts"/>
+    <table id="46" parent="2" name="Presets"/>
+    <table id="47" parent="2" name="Properties"/>
+    <table id="48" parent="2" name="Shares"/>
+    <table id="49" parent="2" name="Tags"/>
+    <table id="50" parent="2" name="TeamCategory"/>
+    <table id="51" parent="2" name="Teams"/>
+    <table id="52" parent="2" name="Vitrins"/>
+    <column id="53" parent="23" name="CommentSituationId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="54" parent="23" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(50)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="55" parent="23" name="Description">
+      <Position>3</Position>
+      <DataType>varchar(500)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="56" parent="23" name="PRIMARY">
+      <ColNames>CommentSituationId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="57" parent="24" name="CommentId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="58" parent="24" name="Content">
+      <Position>2</Position>
+      <DataType>text|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="59" parent="24" name="Member">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="60" parent="24" name="Time">
+      <Position>4</Position>
+      <DataType>timestamp|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <column id="61" parent="24" name="Object">
+      <Position>5</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <column id="62" parent="24" name="ObjectType">
+      <Position>6</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="63" parent="24" name="Parent">
+      <Position>7</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <column id="64" parent="24" name="Situation">
+      <Position>8</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;1&apos;</DefaultExpression>
+    </column>
+    <key id="65" parent="24" name="PRIMARY">
+      <ColNames>CommentId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="66" parent="25" name="FollowSituationId">
+      <Position>1</Position>
+      <DataType>int(11) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="67" parent="25" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <key id="68" parent="25" name="PRIMARY">
+      <ColNames>FollowSituationId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="69" parent="26" name="FollowId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="70" parent="26" name="Member">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="71" parent="26" name="Object">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="72" parent="26" name="ObjectType">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="73" parent="26" name="Situation">
+      <Position>5</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="74" parent="26" name="Time">
+      <Position>6</Position>
+      <DataType>timestamp(6)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP(6)</DefaultExpression>
+    </column>
+    <key id="75" parent="26" name="PRIMARY">
+      <ColNames>FollowId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="76" parent="27" name="FriendshipSituationId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="77" parent="27" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="78" parent="27" name="Description">
+      <Position>3</Position>
+      <DataType>varchar(2000)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="79" parent="27" name="PRIMARY">
+      <ColNames>FriendshipSituationId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="80" parent="28" name="FriendshipId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="81" parent="28" name="MemberOne">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="82" parent="28" name="MemberTwo">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="83" parent="28" name="FriendshipSituation">
+      <Position>4</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="84" parent="28" name="PRIMARY">
+      <ColNames>FriendshipId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="85" parent="29" name="GradeId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="86" parent="29" name="Member">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="87" parent="29" name="Object">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="88" parent="29" name="ObjectType">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="89" parent="29" name="Value">
+      <Position>5</Position>
+      <DataType>float|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="90" parent="29" name="Date">
+      <Position>6</Position>
+      <DataType>timestamp(6)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP(6)</DefaultExpression>
+    </column>
+    <key id="91" parent="29" name="PRIMARY">
+      <ColNames>GradeId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="92" parent="30" name="KeywordId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="93" parent="30" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="94" parent="30" name="PRIMARY">
+      <ColNames>KeywordId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="95" parent="31" name="LikeId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="96" parent="31" name="Value">
+      <Position>2</Position>
+      <DataType>tinyint(4)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="97" parent="31" name="Member">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="98" parent="31" name="Post">
+      <Position>4</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="99" parent="31" name="Date">
+      <Position>5</Position>
+      <DataType>timestamp(6)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP(6)</DefaultExpression>
+    </column>
+    <column id="100" parent="31" name="Token">
+      <Position>6</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="101" parent="31" name="PRIMARY">
+      <ColNames>LikeId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="102" parent="32" name="LoginId">
+      <Position>1</Position>
+      <DataType>bigint(20) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="103" parent="32" name="Description">
+      <Position>2</Position>
+      <DataType>varchar(2000)|0</DataType>
+    </column>
+    <column id="104" parent="32" name="LoginTime">
+      <Position>3</Position>
+      <DataType>timestamp|0</DataType>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <column id="105" parent="32" name="Token">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="106" parent="32" name="Member">
+      <Position>5</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <column id="107" parent="32" name="IP">
+      <Position>6</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <key id="108" parent="32" name="PRIMARY">
+      <ColNames>LoginId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="109" parent="33" name="MediaTypeId">
+      <Position>1</Position>
+      <DataType>tinyint(3) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="110" parent="33" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <key id="111" parent="33" name="PRIMARY">
+      <ColNames>MediaTypeId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="112" parent="34" name="MemberMemberTypeId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="113" parent="34" name="MemberType">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="114" parent="34" name="Member">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="115" parent="34" name="PRIMARY">
+      <ColNames>MemberMemberTypeId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="116" parent="35" name="MemberPostId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="117" parent="35" name="Member">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="118" parent="35" name="Post">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="119" parent="35" name="ArticleSituation">
+      <Position>4</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <key id="120" parent="35" name="PRIMARY">
+      <ColNames>MemberPostId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="121" parent="36" name="MemberRoleId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="122" parent="36" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="123" parent="36" name="Description">
+      <Position>3</Position>
+      <DataType>varchar(2000)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="124" parent="36" name="PRIMARY">
+      <ColNames>MemberRoleId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="125" parent="37" name="MemberTeamId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="126" parent="37" name="Member">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="127" parent="37" name="Team">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="128" parent="37" name="TeamSituation">
+      <Position>4</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="129" parent="37" name="PRIMARY">
+      <ColNames>MemberTeamId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="130" parent="38" name="MemberTypeId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="131" parent="38" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="132" parent="38" name="Description">
+      <Position>3</Position>
+      <DataType>varchar(2000)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="133" parent="38" name="PRIMARY">
+      <ColNames>MemberTypeId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="134" parent="39" name="MemberId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="135" parent="39" name="FullName">
+      <Position>2</Position>
+      <DataType>varchar(50)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="136" parent="39" name="Profile">
+      <Position>3</Position>
+      <DataType>text|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="137" parent="39" name="Sex">
+      <Position>4</Position>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="138" parent="39" name="BirthDate">
+      <Position>5</Position>
+      <DataType>varchar(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="139" parent="39" name="Address">
+      <Position>6</Position>
+      <DataType>varchar(400)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="140" parent="39" name="Phone">
+      <Position>7</Position>
+      <DataType>varchar(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="141" parent="39" name="Username">
+      <Position>8</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="142" parent="39" name="Email">
+      <Position>9</Position>
+      <DataType>varchar(200)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="143" parent="39" name="Password">
+      <Position>10</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="144" parent="39" name="MemberType">
+      <Position>11</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="145" parent="39" name="VerificationCode">
+      <Position>12</Position>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="146" parent="39" name="Active">
+      <Position>13</Position>
+      <DataType>bit(1)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>b&apos;1&apos;</DefaultExpression>
+    </column>
+    <column id="147" parent="39" name="Parent">
+      <Position>14</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <key id="148" parent="39" name="PRIMARY">
+      <ColNames>MemberId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="149" parent="40" name="MessageId">
+      <Position>1</Position>
+      <DataType>bigint(20) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="150" parent="40" name="To">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="151" parent="40" name="From">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="152" parent="40" name="Title">
+      <Position>4</Position>
+      <DataType>varchar(2000)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="153" parent="40" name="Content">
+      <Position>5</Position>
+      <DataType>text|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="154" parent="40" name="Date">
+      <Position>6</Position>
+      <DataType>datetime|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="155" parent="40" name="Parent">
+      <Position>7</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="156" parent="40" name="PRIMARY">
+      <ColNames>MessageId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="157" parent="41" name="ObjectTypeId">
+      <Position>1</Position>
+      <DataType>tinyint(3) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="158" parent="41" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <key id="159" parent="41" name="PRIMARY">
+      <ColNames>ObjectTypeId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="160" parent="42" name="OptionId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="161" parent="42" name="Key">
+      <Position>2</Position>
+      <DataType>varchar(2000)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="162" parent="42" name="Value">
+      <Position>3</Position>
+      <DataType>varchar(2000)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="163" parent="42" name="PRIMARY">
+      <ColNames>OptionId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="164" parent="43" name="PostCategoryId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="165" parent="43" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="166" parent="43" name="PRIMARY">
+      <ColNames>PostCategoryId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="167" parent="44" name="PostTagId">
+      <Position>1</Position>
+      <DataType>bigint(20) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="168" parent="44" name="Post">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <column id="169" parent="44" name="Tag">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <key id="170" parent="44" name="PRIMARY">
+      <ColNames>PostTagId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="171" parent="45" name="PostId">
+      <Position>1</Position>
+      <DataType>bigint(20) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="172" parent="45" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(2000)|0</DataType>
+    </column>
+    <column id="173" parent="45" name="Descruption">
+      <Position>3</Position>
+      <DataType>varchar(2000)|0</DataType>
+    </column>
+    <column id="174" parent="45" name="MediaType">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="175" parent="45" name="CreateTime">
+      <Position>5</Position>
+      <DataType>timestamp|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <column id="176" parent="45" name="EditTime">
+      <Position>6</Position>
+      <DataType>timestamp|0</DataType>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <column id="177" parent="45" name="DeleteTime">
+      <Position>7</Position>
+      <DataType>timestamp|0</DataType>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <column id="178" parent="45" name="Deleted">
+      <Position>8</Position>
+      <DataType>bit(1)|0</DataType>
+      <DefaultExpression>b&apos;0&apos;</DefaultExpression>
+    </column>
+    <column id="179" parent="45" name="PostCategory">
+      <Position>9</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <key id="180" parent="45" name="PRIMARY">
+      <ColNames>PostId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="181" parent="46" name="PresetId">
+      <Position>1</Position>
+      <DataType>bigint(20) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="182" parent="46" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="183" parent="46" name="DefaultValue">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="184" parent="46" name="Description">
+      <Position>4</Position>
+      <DataType>varchar(2000)|0</DataType>
+    </column>
+    <column id="185" parent="46" name="Order">
+      <Position>5</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="186" parent="46" name="ObjectType">
+      <Position>6</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <column id="187" parent="46" name="ObjectId">
+      <Position>7</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <key id="188" parent="46" name="PRIMARY">
+      <ColNames>PresetId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="189" parent="47" name="PropertyId">
+      <Position>1</Position>
+      <DataType>bigint(20) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="190" parent="47" name="Name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="191" parent="47" name="Value">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="192" parent="47" name="ObjectType">
+      <Position>4</Position>
+      <DataType>bigint(255)|0</DataType>
+    </column>
+    <column id="193" parent="47" name="ObjectId">
+      <Position>5</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <key id="194" parent="47" name="PRIMARY">
+      <ColNames>PropertyId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="195" parent="48" name="ShareId">
+      <Position>1</Position>
+      <DataType>bigint(20) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="196" parent="48" name="Post">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <column id="197" parent="48" name="Sender">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <column id="198" parent="48" name="Receiver">
+      <Position>4</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <column id="199" parent="48" name="Time">
+      <Position>5</Position>
+      <DataType>timestamp|0</DataType>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <key id="200" parent="48" name="PRIMARY">
+      <ColNames>ShareId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="201" parent="49" name="TagId">
+      <Position>1</Position>
+      <DataType>bigint(20) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="202" parent="49" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="203" parent="49" name="PRIMARY">
+      <ColNames>TagId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="204" parent="50" name="ProductCategoryId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="205" parent="50" name="Team">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="206" parent="50" name="Category">
+      <Position>3</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="207" parent="50" name="PRIMARY">
+      <ColNames>ProductCategoryId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="208" parent="51" name="TeamId">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="209" parent="51" name="Title">
+      <Position>2</Position>
+      <DataType>varchar(50)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="210" parent="51" name="Description">
+      <Position>3</Position>
+      <DataType>text|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="211" parent="51" name="TeamCategory">
+      <Position>4</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="212" parent="51" name="Parent">
+      <Position>5</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <key id="213" parent="51" name="PRIMARY">
+      <ColNames>TeamId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="214" parent="52" name="VitrinId">
+      <Position>1</Position>
+      <DataType>bigint(20) unsigned|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="215" parent="52" name="Member">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="216" parent="52" name="Key">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="217" parent="52" name="Value">
+      <Position>4</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="218" parent="52" name="PRIMARY">
+      <ColNames>VitrinId</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

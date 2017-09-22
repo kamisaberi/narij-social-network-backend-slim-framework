@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="NARIJ_00004@localhost" uuid="af7486c6-b048-4d73-a1b2-dd602a3c5397">
+    <data-source name="NARIJ_00005@localhost" uuid="85293a25-f042-48a2-a794-84c5c78b10e6">
       <database-info product="MySQL" version="5.6.11" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>
@@ -9,7 +9,7 @@
       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper" />
       <secret-storage>master_key</secret-storage>
       <user-name>root</user-name>
-      <resolve-scope>NARIJ_00004:</resolve-scope>
+      <resolve-scope>NARIJ_00005:</resolve-scope>
     </data-source>
   </component>
 </project>

@@ -31,6 +31,27 @@ class Login implements \JsonSerializable
     private $memberId;
 
     /**
+     * @var string
+     */
+    private $IP;
+
+    /**
+     * @return string
+     */
+    public function getIP()
+    {
+        return $this->IP;
+    }
+
+    /**
+     * @param string $IP
+     */
+    public function setIP($IP)
+    {
+        $this->IP = $IP;
+    }
+
+    /**
      * Login constructor.
      * @param $loginId
      * @param $token
@@ -45,6 +66,7 @@ class Login implements \JsonSerializable
         $this->description = "";
         $this->loginTime = "";
         $this->memberId = 0;
+        $this->IP= "";
     }
 
     /**

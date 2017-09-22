@@ -1,7 +1,7 @@
 <?php
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\UploadedFile;
+use Slim\Http\UploadedFile;
 
 
 require '../vendor/autoload.php';
@@ -15,7 +15,7 @@ $app = new \Slim\App([
 ]);
 
 $container = $app->getContainer();
-$container['upload_directory'] = __DIR__ . '/uploads';
+$container['upload_directory'] = 'uploads';
 
 //function to check parameters
 function isTheseParametersAvailable($required_fields)
@@ -44,7 +44,8 @@ function isTheseParametersAvailable($required_fields)
 function moveUploadedFile($directory, UploadedFile $uploadedFile)
 {
     $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-    $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
+    $basename = bin2hex(rand(10000, 99999)); // see http://php.net/manual/en/function.random-bytes.php
+//    $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
     $filename = sprintf('%s.%0.8s', $basename, $extension);
 
     $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
@@ -83,10 +84,10 @@ $app->post("/authenticate", function (Request $request, Response $response) {
         $res = $lds->authenticate($token, $ip);
         $lds->close();
 
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = trim($res);
-        $response->getBody()->write(json_encode($response));
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = trim($res);
+        $response->getBody()->write(json_encode($res1));
     }
 
 
@@ -97,6 +98,9 @@ $app->post("/authenticate", function (Request $request, Response $response) {
 //    @POST("register/enterPhoneNumber")
 //    Call < WebServiceMessage> enterPhoneNumber(@Field("phone") String phone);
 $app->post("/register/enterPhoneNumber", function (Request $request, Response $response) {
+
+
+    require_once '../classes/sms/SmsSender.inc';
 
     if (isTheseParametersAvailable(array('phone'))) {
         $requestData = $request->getParsedBody();
@@ -110,19 +114,21 @@ $app->post("/register/enterPhoneNumber", function (Request $request, Response $r
         $id = $mds->enterPhoneNumber($member);
         $mds->close();
 
+        //echo "ID : $id";
         if ($id > 0) {
             $sms = new SmsSender();
-            $res = $sms->enqueueSample($phone, "your Verification Code is $ver");
-            $response = array();
-            $response["error"] = false;
-            $response["message"] = $res;
+            //$res1 = $sms->enqueueSample($phone, "your Verification Code is $ver");
+            //echo $res1;
+            $res = array();
+            $res["error"] = false;
+            $res["message"] = $ver;
             //echo json_encode($response);
-            $response->getBody()->write(json_encode($response));
+            $response->getBody()->write(json_encode($res));
         } else {
-            $response = array();
-            $response["error"] = true;
-            $response["message"] = "error";
-            $response->getBody()->write(json_encode($response));
+            $res = array();
+            $res["error"] = true;
+            $res["message"] = "error";
+            $response->getBody()->write(json_encode($res));
         }
         //$token = bin2hex(openssl_random_pseudo_bytes(64));  //PHP 7
         //$token = bin2hex(random_bytes(64));
@@ -150,20 +156,20 @@ $app->post("/register/confirmVerificationCode", function (Request $request, Resp
         $mds->close();
 
 
-        $response = array();
+        $res1 = array();
 
         if ($res == true) {
-            $response["error"] = false;
-            $response["message"] = "successful";
+            $res1["error"] = false;
+            $res1["message"] = "successful";
         } else {
-            $response["error"] = true;
-            $response["message"] = "failed";
+            $res1["error"] = true;
+            $res1["message"] = "failed";
 
         }
         //$token = bin2hex(openssl_random_pseudo_bytes(64));  //PHP 7
         //$token = bin2hex(random_bytes(64));
         //echo json_encode($response);
-        $response->getBody()->write(json_encode($response));
+        $response->getBody()->write(json_encode($res1));
     }
 
 });
@@ -175,28 +181,27 @@ $app->post("/register/confirmVerificationCode", function (Request $request, Resp
 
 $app->post("/register/createPassword", function (Request $request, Response $response) {
 
-    if (isTheseParametersAvailable(array('token', 'password'))) {
+    if (isTheseParametersAvailable(array('phone', 'password'))) {
         $requestData = $request->getParsedBody();
-        $token = $requestData['token'];
+        $phone = $requestData['phone'];
         $password = $requestData['password'];
 
         $mds = new MemberDataSource();
         $mds->open();
 
         $member = new Member();
-        $member->setMemberId(1);
+        $member->setPhone($phone);
         $member->setPassword($password);
 
         $mds->createPassword($member);
         $mds->close();
 
-        $response = array();
-
-        $response["error"] = false;
-        $response["message"] = "successful";
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
 
         //echo json_encode($response);
-        $response->getBody()->write(json_encode($response));
+        $response->getBody()->write(json_encode($res1));
 
     }
 
@@ -229,7 +234,7 @@ $app->post("/profile/get", function (Request $request, Response $response) {
         $member = new Member();
         $member = $mds->getProfile($memberId);
         $mds->close();
-        $response = array();
+        $res1 = array();
 //        if ($member->getMemberId() > 0) {
 //
 //
@@ -241,14 +246,14 @@ $app->post("/profile/get", function (Request $request, Response $response) {
 //            $response["message"] = "meber not found";
 //        }
 
-        $response['memberId'] = $member->getMemberId();
-        $response['fullName'] = $member->getFullName();
-        $response['phone'] = $member->getPhone();
-        $response['email'] = $member->getEmail();
+        $res1['memberId'] = $member->getMemberId();
+        $res1['fullName'] = $member->getFullName();
+        $res1['phone'] = $member->getPhone();
+        $res1['email'] = $member->getEmail();
 
         $pds = new PostDataSource();
         $pds->open();
-        $response['postsCount'] = $pds->getMemberPostsCount($memberId);
+        $res1['postsCount'] = $pds->getMemberPostsCount($memberId);
         $psts = $pds->getMemberPosts($memberId, false);
         $pds->close();
 
@@ -264,12 +269,12 @@ $app->post("/profile/get", function (Request $request, Response $response) {
             $post["editTime"] = $post->getEditTime();
             array_push($posts, $post);
         }
-        $response["posts"] = json_encode(array($posts));
+        $res1["posts"] = json_encode(array($posts));
 
 
         $fds = new FollowDataSource();
         $fds->open();
-        $response['followingsCount'] = $fds->getFollowingsCount($memberId);
+        $res1['followingsCount'] = $fds->getFollowingsCount($memberId);
         $flwings = $fds->getFollowings($memberId);
         $followings = array();
         foreach ($flwings as $flwing) {
@@ -282,9 +287,9 @@ $app->post("/profile/get", function (Request $request, Response $response) {
             $following["time"] = $flwing->getTime();
             array_push($followings, $following);
         }
-        $response["followings"] = json_encode(array($followings));
+        $res1["followings"] = json_encode(array($followings));
 
-        $response['followersCount'] = $fds->getFollowersRequests($memberId);
+        $res1['followersCount'] = $fds->getFollowersRequests($memberId);
 
         $flwers = $fds->getFollowers($memberId);
         $followers = array();
@@ -298,11 +303,11 @@ $app->post("/profile/get", function (Request $request, Response $response) {
             $follower["time"] = $flwer->getTime();
             array_push($followers, $following);
         }
-        $response["followers"] = json_encode(array($followers));
+        $res1["followers"] = json_encode(array($followers));
 
 
         $fds->close();
-        $response->getBody()->write(json_encode($response));
+        $response->getBody()->write(json_encode($res1));
     }
 
 });
@@ -328,10 +333,10 @@ $app->post("/profile/set", function (Request $request, Response $response) {
         $mds->updateProfile($token, $member);
         $mds->close();
 
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = "successful";
-        $response->getBody()->write(json_encode($response));
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
     }
 
 });
@@ -341,21 +346,21 @@ $app->post("/profile/set", function (Request $request, Response $response) {
 //    Call < WebServiceMessage> setProfileEmail(@Field("token") String token, @Field("email") String email);
 $app->post("/profile/set/email", function (Request $request, Response $response) {
 
-    if (isTheseParametersAvailable(array('token', 'email'))) {
+    if (isTheseParametersAvailable(array('phone', 'email'))) {
 
         $requestData = $request->getParsedBody();
-        $token = $requestData['token'];
+        $phone = $requestData['phone'];
         $email = $requestData['email'];
 
         $mds = new MemberDataSource();
         $mds->open();
-        $mds->updateProfileEmail($token, $email);
+        $mds->updateProfileEmail($phone, $email);
         $mds->close();
 
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = "successful";
-        $response->getBody()->write(json_encode($response));
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
 
     }
 
@@ -374,11 +379,11 @@ $app->post("/profile/confirm/email", function (Request $request, Response $respo
         //$token = bin2hex(openssl_random_pseudo_bytes(64));  //PHP 7
         //$token = bin2hex(random_bytes(64));
 
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = "successful";
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
         //echo json_encode($response);
-        $response->getBody()->write(json_encode($response));
+        $response->getBody()->write(json_encode($res1));
     }
 
 });
@@ -389,22 +394,21 @@ $app->post("/profile/confirm/email", function (Request $request, Response $respo
 //    Call < WebServiceMessage> setProfileFullName(@Field("token") String token, @Field("fullName") String fullName);
 $app->post("/profile/set/fullName", function (Request $request, Response $response) {
 
-    if (isTheseParametersAvailable(array('token', 'fullName'))) {
+    if (isTheseParametersAvailable(array('phone', 'fullName'))) {
 
         $requestData = $request->getParsedBody();
-        $token = $requestData['token'];
+        $phone = $requestData['phone'];
         $fullName = $requestData['fullName'];
 
         $mds = new MemberDataSource();
         $mds->open();
-        $mds->updateProfileFullName($token, $fullName);
+        $mds->updateProfileFullName($phone, $fullName);
         $mds->close();
 
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = "successful";
-        $response->getBody()->write(json_encode($response));
-
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
     }
 
 });
@@ -426,10 +430,10 @@ $app->post("/profile/set/location", function (Request $request, Response $respon
         $mds->updateProfileLocation($token, $location);
         $mds->close();
 
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = "successful";
-        $response->getBody()->write(json_encode($response));
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
 
     }
 
@@ -440,21 +444,30 @@ $app->post("/profile/set/location", function (Request $request, Response $respon
 //    Call < WebServiceMessage> setProfilePhoto(@Field("token") String token, @Field("photo") String photo);
 $app->post("/profile/set/photo", function (Request $request, Response $response) {
 
-    if (isTheseParametersAvailable(array('token', 'photo'))) {
+    if (isTheseParametersAvailable(array('token'))) {
 
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
-        $photo = $requestData['photo'];
+
+
+        $directory = $this->get('upload_directory');
+        $uploadedFiles = $request->getUploadedFiles();
+        $uploadedFile = $uploadedFiles['file'];
+        $filename = "";
+        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+            $filename = moveUploadedFile($directory, $uploadedFile);
+        }
+
 
         $mds = new MemberDataSource();
         $mds->open();
-        $mds->updateProfilePhoto($token, $photo);
+        $mds->updateProfilePhoto($token, $filename);
         $mds->close();
 
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = "successful";
-        $response->getBody()->write(json_encode($response));
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
 
     }
 
@@ -482,16 +495,16 @@ $app->post("/password/forgot/enterPhoneNumber", function (Request $request, Resp
         if ($id > 0) {
             $sms = new SmsSender();
             $res = $sms->enqueueSample($phone, "your Verification Code is $ver");
-            $response = array();
-            $response["error"] = false;
-            $response["message"] = $res;
+            $res1 = array();
+            $res1["error"] = false;
+            $res1["message"] = $res;
             //echo json_encode($response);
-            $response->getBody()->write(json_encode($response));
+            $response->getBody()->write(json_encode($res1));
         } else {
-            $response = array();
-            $response["error"] = true;
-            $response["message"] = "error";
-            $response->getBody()->write(json_encode($response));
+            $res1 = array();
+            $res1["error"] = true;
+            $res1["message"] = "error";
+            $response->getBody()->write(json_encode($res1));
         }
         //$token = bin2hex(openssl_random_pseudo_bytes(64));  //PHP 7
         //$token = bin2hex(random_bytes(64));
@@ -523,16 +536,16 @@ $app->post("/password/forgot/enterEmail", function (Request $request, Response $
         if ($id > 0) {
             $sms = new SmsSender();
             $res = $sms->enqueueSample($phone, "your Verification Code is $ver");
-            $response = array();
-            $response["error"] = false;
-            $response["message"] = $res;
+            $res1 = array();
+            $res1["error"] = false;
+            $res1["message"] = $res;
             //echo json_encode($response);
-            $response->getBody()->write(json_encode($response));
+            $response->getBody()->write(json_encode($res1));
         } else {
-            $response = array();
-            $response["error"] = true;
-            $response["message"] = "error";
-            $response->getBody()->write(json_encode($response));
+            $res1 = array();
+            $res1["error"] = true;
+            $res1["message"] = "error";
+            $response->getBody()->write(json_encode($res1));
         }
         //$token = bin2hex(openssl_random_pseudo_bytes(64));  //PHP 7
         //$token = bin2hex(random_bytes(64));
@@ -560,19 +573,19 @@ $app->post("/password/check", function (Request $request, Response $response) {
         $res = $mds->checkPassword($member);
         $mds->close();
 
-        $response = array();
+        $res1 = array();
 
         if ($res == true) {
-            $response["error"] = false;
-            $response["message"] = "successful";
+            $res1["error"] = false;
+            $res1["message"] = "successful";
 
         } else {
-            $response["error"] = true;
-            $response["message"] = "failed";
+            $res1["error"] = true;
+            $res1["message"] = "failed";
 
         }
         //echo json_encode($response);
-        $response->getBody()->write(json_encode($response));
+        $response->getBody()->write(json_encode($res1));
     }
 
 });
@@ -599,13 +612,13 @@ $app->post("/password/change", function (Request $request, Response $response) {
         $res = $mds->changePassword($member);
         $mds->close();
 
-        $response = array();
+        $res1 = array();
 
-        $response["error"] = false;
-        $response["message"] = "successful";
+        $res1["error"] = false;
+        $res1["message"] = "successful";
 
         //echo json_encode($response);
-        $response->getBody()->write(json_encode($response));
+        $response->getBody()->write(json_encode($res1));
 
     }
 
@@ -620,6 +633,9 @@ $app->post("/login", function (Request $request, Response $response) {
         $requestData = $request->getParsedBody();
         $phone = $requestData['phone'];
         $password = $requestData['password'];
+//        echo $phone;
+//        echo "<br>";
+//        echo $password;
         //$token = bin2hex(openssl_random_pseudo_bytes(64));  //PHP 7
 
         $mds = new MemberDataSource();
@@ -632,17 +648,28 @@ $app->post("/login", function (Request $request, Response $response) {
         $mds->close();
 
         $token = "";
-        if ($res == true) {
+        $res1 = array();
+        if ($res > 0) {
             $token = bin2hex(random_bytes(64));
+            $login = new Login();
+            $login->setDescription("$res  logged in");
+            $login->setIP($_SERVER["REMOTE_ADDR"]);
+            $login->setToken($token);
+            $login->setMemberId($res);
+            $lds = new LoginDataSource();
+            $lds->open();
+            $lds->createLog($login);
+            $lds->close();
+
+            $res1["error"] = false;
+            $res1["message"] = $token;
         } else {
             $token = "error";
+            $res1["error"] = true;
+            $res1["message"] = $token;
         }
-
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = $token;
         //echo json_encode($response);
-        $response->getBody()->write(json_encode($response));
+        $response->getBody()->write(json_encode($res1));
 
 
     }
@@ -671,18 +698,18 @@ $app->post("/password/create", function (Request $request, Response $response) {
         $res = $mds->createPassword($member);
         $mds->close();
 
-        $response = array();
+        $res1 = array();
 
         if ($res == true) {
-            $response["error"] = false;
-            $response["message"] = "successful";
+            $res1["error"] = false;
+            $res1["message"] = "successful";
 
         } else {
-            $response["error"] = true;
-            $response["message"] = "failed";
+            $res1["error"] = true;
+            $res1["message"] = "failed";
         }
 
-        $response->getBody()->write(json_encode($response));
+        $response->getBody()->write(json_encode($res1));
     }
 
 
@@ -694,7 +721,50 @@ $app->post("/password/create", function (Request $request, Response $response) {
 
 $app->post("/post/create/audio", function (Request $request, Response $response) {
 
+    require_once '../classes/datasource/PostDataSource.inc';
+
     if (isTheseParametersAvailable(array('token'))) {
+
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+
+
+        $directory = $this->get('upload_directory');
+        $uploadedFiles = $request->getUploadedFiles();
+        $uploadedFile = $uploadedFiles['file'];
+        $filename = "";
+        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+            $filename = moveUploadedFile($directory, $uploadedFile);
+        }
+
+
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+        $title = $requestData['title'];
+        $description = $requestData['description'];
+        $tags = $requestData['tags'];
+
+        $post = new Post();
+        $post->setTitle($title);
+        $post->setDescription($description);
+        $post->getMediaType()->setTitle("Audio");
+
+
+        $lds = new LoginDataSource();
+        $lds->open();
+        $memberId = $lds->getMemberIdBasedOnToken($token);
+        $lds->close();
+
+
+        $pds = new PostDataSource();
+        $pds->open();
+        $pds->create($post, $memberId, $tags);
+        $pds->close();
+
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
 
     }
 
@@ -704,9 +774,49 @@ $app->post("/post/create/audio", function (Request $request, Response $response)
 //    @POST("post/create/photo")
 //    Call < WebServiceMessage> createPhotoPost(@Field("token") String token);
 
-$app->post("/post/create/photo", function (Request $request, Response $response) {
+$app->post("/post/create/image", function (Request $request, Response $response) {
 
-    if (isTheseParametersAvailable(array('token'))) {
+    require_once '../classes/datasource/PostDataSource.inc';
+
+    if (isTheseParametersAvailable(array('token', 'title', 'description', 'tags'))) {
+
+        $directory = $this->get('upload_directory');
+        $uploadedFiles = $request->getUploadedFiles();
+        //fgdg
+        $uploadedFile = $uploadedFiles['file'];
+        $filename = "";
+        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+            $filename = moveUploadedFile($directory, $uploadedFile);
+        }
+
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+        $title = $requestData['title'];
+        $description = $requestData['description'];
+        $tags = $requestData['tags'];
+
+        $post = new Post();
+        $post->setTitle($title);
+        $post->setDescription($description);
+        $post->getMediaType()->setTitle("Image");
+
+
+        $lds = new LoginDataSource();
+        $lds->open();
+        $memberId = $lds->getMemberIdBasedOnToken($token);
+        $lds->close();
+
+
+        $pds = new PostDataSource();
+        $pds->open();
+        $pds->create($post, $memberId, $tags);
+        $pds->close();
+
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
+
 
     }
 
@@ -718,7 +828,36 @@ $app->post("/post/create/photo", function (Request $request, Response $response)
 
 $app->post("/post/create/text", function (Request $request, Response $response) {
 
-    if (isTheseParametersAvailable(array('token'))) {
+    require_once '../classes/datasource/PostDataSource.inc';
+    if (isTheseParametersAvailable(array('token', 'title', 'description', 'tags'))) {
+
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+        $title = $requestData['title'];
+        $description = $requestData['description'];
+        $tags = $requestData['tags'];
+
+        $post = new Post();
+        $post->setTitle($title);
+        $post->setDescription($description);
+        $post->getMediaType()->setTitle("Text");
+
+
+        $lds = new LoginDataSource();
+        $lds->open();
+        $memberId = $lds->getMemberIdBasedOnToken($token);
+        $lds->close();
+
+
+        $pds = new PostDataSource();
+        $pds->open();
+        $pds->create($post, $memberId, $tags);
+        $pds->close();
+
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
 
     }
 
@@ -730,7 +869,51 @@ $app->post("/post/create/text", function (Request $request, Response $response) 
 
 $app->post("/post/create/video", function (Request $request, Response $response) {
 
-    if (isTheseParametersAvailable(array('token'))) {
+    require_once '../classes/datasource/PostDataSource.inc';
+
+    if (isTheseParametersAvailable(array('token', 'title', 'description', 'tags'))) {
+
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+
+
+        $directory = $this->get('upload_directory');
+        $uploadedFiles = $request->getUploadedFiles();
+        $uploadedFile = $uploadedFiles['file'];
+        $filename = "";
+        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+            $filename = moveUploadedFile($directory, $uploadedFile);
+        }
+
+
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+        $title = $requestData['title'];
+        $description = $requestData['description'];
+        $tags = $requestData['tags'];
+
+        $post = new Post();
+        $post->setTitle($title);
+        $post->setDescription($description);
+        $post->getMediaType()->setTitle("Video");
+
+
+        $lds = new LoginDataSource();
+        $lds->open();
+        $memberId = $lds->getMemberIdBasedOnToken($token);
+        $lds->close();
+
+
+        $pds = new PostDataSource();
+        $pds->open();
+        $pds->create($post, $memberId, $tags);
+        $pds->close();
+
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
+
 
     }
 
@@ -757,11 +940,11 @@ $app->post("/post/get", function (Request $request, Response $response) {
         $post = $pds->getPost($postId, true);
         $pds->close();
 
-        $response = array();
-        $response["postId"] = $post->getPostId();
-        $response["createTime"] = $post->getCreateTime();
-        $response["editTime"] = $post->getEditTime();
-        $response["deleteTime"] = $post->getDeleteTime();
+        $res1 = array();
+        $res1["postId"] = $post->getPostId();
+        $res1["createTime"] = $post->getCreateTime();
+        $res1["editTime"] = $post->getEditTime();
+        $res1["deleteTime"] = $post->getDeleteTime();
 
         $comments = array();
 
@@ -779,9 +962,9 @@ $app->post("/post/get", function (Request $request, Response $response) {
 
             array_push($comments, $comment);
         }
-        $response["comments"] = json_encode(array($comments));
+        $res1["comments"] = json_encode(array($comments));
 
-        $response->getBody()->write(json_encode($response));
+        $response->getBody()->write(json_encode($res1));
     }
 
 });
@@ -805,10 +988,10 @@ $app->post("/post/like", function (Request $request, Response $response) {
         $lds->like($postId, $token);
         $lds->close();
 
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = "successful";
-        $response->getBody()->write(json_encode($response));
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
     }
 
 });
@@ -895,10 +1078,10 @@ $app->post("/post/share", function (Request $request, Response $response) {
         $res = $sds->share($token, $receiver, $post);
         $sds->close();
 
-        $response = array();
-        $response["error"] = false;
-        $response["message"] = "successful";
-        $response->getBody()->write(json_encode($response));
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $response->getBody()->write(json_encode($res1));
     }
 
 });
@@ -910,7 +1093,9 @@ $app->post("/post/share", function (Request $request, Response $response) {
 $app->post("/member/get", function (Request $request, Response $response) {
 
     require_once '../classes/datasource/LoginDataSource.inc';
+    require_once '../classes/datasource/FollowDataSource.inc';
     require_once '../classes/datasource/MemberDataSource.inc';
+    require_once '../classes/datasource/PostDataSource.inc';
     if (isTheseParametersAvailable(array('token', 'memberId'))) {
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
@@ -929,41 +1114,93 @@ $app->post("/member/get", function (Request $request, Response $response) {
         $member = $mds->getMember($memberId);
         $mds->close();
 
-        $response = array();
-        $response["memberId"] = $member->getMemberId();
-        $response["fullName"] = $member->getFullName();
-        $response["email"] = $member->getEmail();
-        $response->getBody()->write(json_encode($response));
-    }
 
-});
+        $fds = new FollowDataSource();
+        $fds->open();
 
-//    @FormUrlEncoded
-//    @POST("members/suggestion")
-//    Call < WebServiceMessage> getSuggestions(@Field("token") String token);
+        $fllwngs = $fds->getFollowings($memberId);
+        $followings = array();
+        foreach ($fllwngs as $fllwng) {
+            $following = array();
+            $following["followId"] = $fllwng->getFollowId();
+            $following["situation"] = $fllwng->getSituation();
+            $following["time"] = $fllwng->getTime();
 
-$app->post("/members/suggestion", function (Request $request, Response $response) {
-
-    if (isTheseParametersAvailable(array('token'))) {
-        $requestData = $request->getParsedBody();
-        $token = $requestData['token'];
-        $mds = new MemberDataSource();
-        $mds->open();
-        $mmbrs = $mds->suggest();
-        $mds->close();
-        $members = array();
-        foreach ($mmbrs as $mmbr) {
-            $member = array();
-            $member["memberId"] = $mmbr->getMemberId();
-            $member["fullName"] = $mmbr->getFullName();
-            $member["phone"] = $mmbr->getPhone();
-            $member["email"] = $mmbr->getEmail();
-            array_push($members, $member);
+            $mem = array();
+            $mem['memberId'] = $fllwng->getMember()->getMemberId();
+            $mem['fullName'] = $fllwng->getMember()->getFullName();
+            $mem['email'] = $fllwng->getMember()->getEmail();
+            $mem['phone'] = $fllwng->getMember()->getPhone();
+            $following["member"] = $mem;
+            array_push($followings, $following);
         }
-        $response->getBody()->write(json_encode(array("members" => $members)));
+
+        $fllwrs = $fds->getFollowers($memberId);
+        $followers = array();
+        foreach ($fllwrs as $fllwr) {
+            $follower = array();
+            $follower["followId"] = $fllwr->getFollowId();
+            $follower["situation"] = $fllwr->getSituation();
+            $follower["time"] = $fllwr->getTime();
+
+            $mem = array();
+            $mem['memberId'] = $fllwr->getMember()->getMemberId();
+            $mem['fullName'] = $fllwr->getMember()->getFullName();
+            $mem['email'] = $fllwr->getMember()->getEmail();
+            $mem['phone'] = $fllwr->getMember()->getPhone();
+            $follower["member"] = $mem;
+
+            array_push($followers, $follower);
+        }
+
+        $fds->close();
+
+
+        $pds = new PostDataSource();
+        $pds->open();
+
+        $psts = $pds->getMemberPosts($memberId);
+
+        $posts = array();
+        foreach ($psts as $pst) {
+            $post = array();
+            $post["postId"] = $pst->getPostId();
+            $post["title"] = $pst->getTitle();
+            $post["description"] = $pst->getDescription();
+            $post["description"] = $pst->getDescription();
+            $post["deleteTime"] = $pst->getDeleteTime();
+            $post["createTime"] = $pst->getCreateTime();
+            $post["editTime"] = $pst->getEditTime();
+            array_push($posts, $post);
+        }
+
+        $pds->close();
+
+        $res3 = array();
+        $res3["memberId"] = $member->getMemberId();
+        $res3["fullName"] = $member->getFullName();
+        $res3["email"] = $member->getEmail();
+        $res3["phone"] = $member->getPhone();
+        $res3['followers'] = $followers;
+        $res3['followings'] = $followings;
+        $res3['posts'] = $posts;
+
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $res2 = array();
+        $res2["message"] = $res1;
+        $res2['member'] = $res3;
+
+//
+        $response->getBody()->write(json_encode($res2));
+
+
+//        $response->getBody()->write(json_encode($res1));
     }
 
 });
+
 
 //    @FormUrlEncoded
 //    @POST("logs/get/all")
@@ -1056,10 +1293,10 @@ $app->post("/followers/confirm", function (Request $request, Response $response)
         $fds->close();
 
         if ($res == true) {
-            $response = array();
-            $response["error"] = false;
-            $response["message"] = "successful";
-            $response->getBody()->write(json_encode($response));
+            $res1 = array();
+            $res1["error"] = false;
+            $res1["message"] = "successful";
+            $response->getBody()->write(json_encode($res1));
         }
     }
 
@@ -1088,10 +1325,10 @@ $app->post("/followers/reject", function (Request $request, Response $response) 
         $fds->close();
 
         if ($res == true) {
-            $response = array();
-            $response["error"] = false;
-            $response["message"] = "successful";
-            $response->getBody()->write(json_encode($response));
+            $res1 = array();
+            $res1["error"] = false;
+            $res1["message"] = "successful";
+            $response->getBody()->write(json_encode($res1));
         }
 
     }
@@ -1106,7 +1343,7 @@ $app->post("/followers/get/list", function (Request $request, Response $response
 
     require_once '../classes/datasource/FollowDataSource.inc';
     require_once '../classes/datasource/LoginDataSource.inc';
-    if (isTheseParametersAvailable(array('token'))) {
+    if (isTheseParametersAvailable(array('token', 'memberId'))) {
 
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
@@ -1117,23 +1354,37 @@ $app->post("/followers/get/list", function (Request $request, Response $response
             $memberId = $lds->getMemberIdBasedOnToken($token);
             $lds->close();
         }
+        //echo  $memberId . "<br>";
+
         $fds = new FollowDataSource();
         $fds->open();
         $rqusts = $fds->getFollowers($memberId);
         $fds->close();
 
-        $requests = array();
+        $reqs = array();
         foreach ($rqusts as $rqust) {
-            $request = array();
-            $request["followId"] = $rqust->getFollowId();
-            $request["member"] = $rqust->getMember();
-            $request["object"] = $rqust->getObject();
-            $request["objectType"] = $rqust->getObjectType();
-            $request["situation"] = $rqust->getSituation();
-            $request["time"] = $rqust->getTime();
-            array_push($requests, $request);
+            $req = array();
+            $req["followId"] = $rqust->getFollowId();
+            $mem = array();
+            $mem['memberId'] = $rqust->getMember()->getMemberId();
+            $mem['fullName'] = $rqust->getMember()->getFullName();
+            $mem['email'] = $rqust->getMember()->getEmail();
+            $mem['phone'] = $rqust->getMember()->getPhone();
+
+            $req["member"] = $mem;
+            $req["situation"] = $rqust->getSituation();
+            $req["time"] = $rqust->getTime();
+            array_push($reqs, $req);
         }
-        $response->getBody()->write(json_encode(array("requests" => $requests)));
+
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $res2 = array();
+        $res2['message'] = $res1;
+        $res2['follows'] = $reqs;
+
+        $response->getBody()->write(json_encode($res2));
     }
 
 });
@@ -1147,7 +1398,7 @@ $app->post("/followings/get/list", function (Request $request, Response $respons
 
     require_once '../classes/datasource/FollowDataSource.inc';
     require_once '../classes/datasource/LoginDataSource.inc';
-    if (isTheseParametersAvailable(array('token'))) {
+    if (isTheseParametersAvailable(array('token', 'memberId'))) {
 
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
@@ -1164,18 +1415,30 @@ $app->post("/followings/get/list", function (Request $request, Response $respons
         $rqusts = $fds->getFollowings($memberId);
         $fds->close();
 
-        $requests = array();
+        $reqs = array();
         foreach ($rqusts as $rqust) {
-            $request = array();
-            $request["followId"] = $rqust->getFollowId();
-            $request["member"] = $rqust->getMember();
-            $request["object"] = $rqust->getObject();
-            $request["objectType"] = $rqust->getObjectType();
-            $request["situation"] = $rqust->getSituation();
-            $request["time"] = $rqust->getTime();
-            array_push($requests, $request);
+            $req = array();
+            $req["followId"] = $rqust->getFollowId();
+            $mem = array();
+            $mem['memberId'] = $rqust->getMember()->getMemberId();
+            $mem['fullName'] = $rqust->getMember()->getFullName();
+            $mem['email'] = $rqust->getMember()->getEmail();
+            $mem['phone'] = $rqust->getMember()->getPhone();
+
+            $req["member"] = $mem;
+            $req["situation"] = $rqust->getSituation();
+            $req["time"] = $rqust->getTime();
+            array_push($reqs, $req);
         }
-        $response->getBody()->write(json_encode(array("requests" => $requests)));
+
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $res2 = array();
+        $res2['message'] = $res1;
+        $res2['follows'] = $reqs;
+
+        $response->getBody()->write(json_encode($res2));
     }
 
 });
@@ -1203,10 +1466,10 @@ $app->post("/followings/unfollow", function (Request $request, Response $respons
         $res = $fds->follow($object, $memberId);
         $fds->close();
         if ($res == true) {
-            $response = array();
-            $response["error"] = false;
-            $response["message"] = "successful";
-            $response->getBody()->write(json_encode($response));
+            $res1 = array();
+            $res1["error"] = false;
+            $res1["message"] = "successful";
+            $response->getBody()->write(json_encode($res1));
         }
 
     }
@@ -1236,10 +1499,10 @@ $app->post("/followings/follow", function (Request $request, Response $response)
         $res = $fds->follow($object, $memberId);
         $fds->close();
         if ($res == true) {
-            $response = array();
-            $response["error"] = false;
-            $response["message"] = "successful";
-            $response->getBody()->write(json_encode($response));
+            $res1 = array();
+            $res1["error"] = false;
+            $res1["message"] = "successful";
+            $response->getBody()->write(json_encode($res1));
         }
 
     }
@@ -1271,10 +1534,10 @@ $app->post("/followings/send/request", function (Request $request, Response $res
         $res = $fds->follow($object, $memberId);
         $fds->close();
         if ($res == true) {
-            $response = array();
-            $response["error"] = false;
-            $response["message"] = "successful";
-            $response->getBody()->write(json_encode($response));
+            $res1 = array();
+            $res1["error"] = false;
+            $res1["message"] = "successful";
+            $response->getBody()->write(json_encode($res1));
         }
 
     }
@@ -1327,10 +1590,10 @@ $app->post("/comment/send/text", function (Request $request, Response $response)
         $cds->close();
 
         if ($res == true) {
-            $response = array();
-            $response["error"] = false;
-            $response["message"] = "successful";
-            $response->getBody()->write(json_encode($response));
+            $res1 = array();
+            $res1["error"] = false;
+            $res1["message"] = "successful";
+            $response->getBody()->write(json_encode($res1));
 
         }
     }
@@ -1363,6 +1626,42 @@ $app->post("/comment/reply/text", function (Request $request, Response $response
 
 
 //    @FormUrlEncoded
+//    @POST("members/suggestion")
+//    Call < WebServiceMessage> getSuggestions(@Field("token") String token);
+
+$app->post("/members/suggestion", function (Request $request, Response $response) {
+
+    if (isTheseParametersAvailable(array('token'))) {
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+        $mds = new MemberDataSource();
+        $mds->open();
+        $mmbrs = $mds->suggest();
+        $mds->close();
+        $members = array();
+        foreach ($mmbrs as $mmbr) {
+            $member = array();
+            $member["memberId"] = $mmbr->getMemberId();
+            $member["fullName"] = $mmbr->getFullName();
+            $member["phone"] = $mmbr->getPhone();
+            $member["email"] = $mmbr->getEmail();
+            array_push($members, $member);
+        }
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $res2 = array();
+        $res2['message'] = $res1;
+        $res2['members'] = $members;
+        $response->getBody()->write(json_encode($res2));
+
+        //$response->getBody()->write(json_encode(array("members" => $members)));
+    }
+
+});
+
+
+//    @FormUrlEncoded
 //    @POST("friends/search")
 //    Call < WebServiceMessage> searchFriends(@Field("token") String token);
 
@@ -1385,7 +1684,17 @@ $app->post("/friends/search", function (Request $request, Response $response) {
             $member["phone"] = $pst->getPhone();
             array_push($members, $member);
         }
-        $response->getBody()->write(json_encode(array("members" => $members)));
+
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $res2 = array();
+        $res2['message'] = $res1;
+        $res2['members'] = $members;
+        $response->getBody()->write(json_encode($res2));
+
+
+//        $response->getBody()->write(json_encode(array("members" => $members)));
     }
 
 });

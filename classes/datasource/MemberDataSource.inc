@@ -1,8 +1,8 @@
 <?php
 
-require_once '../dataaccess/DataAccess.inc';
-require_once '../model/Member.inc';
-require_once '../datasource/LoginDataSource.inc';
+require_once __DIR__ . '/../dataaccess/DataAccess.inc';
+require_once __DIR__ . '/../model/Member.inc';
+require_once __DIR__ . '/../datasource/LoginDataSource.inc';
 
 /**
  * Created by PhpStorm.
@@ -87,24 +87,16 @@ class MemberDataSource
         return true;
     }
 
-    public function updateProfileFullName($token, $fullName)
+    public function updateProfileFullName($phone, $fullName)
     {
-        $lds = new LoginDataSource();
-        $lds->open();
-        $memberId = $lds->getMemberIdBasedOnToken($token);
-        $lds->close();
-        $sql = "UPDATE Members  SET Members.FullName='{$fullName}'  WHERE Members.MemberId= $memberId";
+        $sql = "UPDATE NARIJ_00005.Members  SET Members.FullName='{$fullName}'  WHERE Members.Phone= '$phone'";
         $this->da->exec($sql);
         return true;
     }
 
-    public function updateProfileEmail($token, $email)
+    public function updateProfileEmail($phone, $email)
     {
-        $lds = new LoginDataSource();
-        $lds->open();
-        $memberId = $lds->getMemberIdBasedOnToken($token);
-        $lds->close();
-        $sql = "UPDATE Members  SET Members.Email='{$email}'  WHERE Members.MemberId= $memberId";
+        $sql = "UPDATE Members  SET Members.Email='{$email}'  WHERE Members.Phone= '$phone'";
         $this->da->exec($sql);
         return true;
     }
@@ -136,17 +128,22 @@ class MemberDataSource
     {
         $id = 0;
         $sql = "INSERT INTO Members ( `Phone`,`VerificationCode` ) VALUES ('{$member->getPhone()}' , '{$member->getVerificationCode()}')";
+        //echo $sql;
         $id = $this->da->exec($sql);
         return $id;
     }
 
     public function checkVerificationCode(Member $member)
     {
-        $sql = "SELECT * FROM Members WHERE Members.Mobile = '{$member->getPhone()}' AND Members.Password = '{$member->getPassword()}' ";
+        $sql = "SELECT * FROM NARIJ_00005.Members WHERE Members.Phone = '{$member->getPhone()}' AND Members.VerificationCode = '{$member->getVerificationCode()}' ";
+        //echo $sql;
         $result = $this->da->execSelect($sql);
         if (mysqli_num_rows($result) > 0) {
-            $sql = "UPDATE Members SET Members.Active = 1 WHERE Members.MemberId = {$result['MemberId']}";
-            $this->da->execSelect($sql);
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                $sql = "UPDATE Members SET Members.Active = 1 WHERE Members.MemberId = {$row['MemberId']}";
+                $this->da->exec($sql);
+            }
             return true;
         } else {
             return false;
@@ -155,7 +152,7 @@ class MemberDataSource
 
     public function createPassword(Member $member)
     {
-        $sql = "UPDATE Members SET Members.Password= '{$member->getPassword()}' WHERE Members.MemberId = {$member->getMemberId()}";
+        $sql = "UPDATE Members SET Members.Password= '{$member->getPassword()}' WHERE Members.Phone = '{$member->getPhone()}'";
         $this->da->execSelect($sql);
         return true;
 
@@ -193,10 +190,10 @@ class MemberDataSource
     {
         $sql = "SELECT * FROM Members WHERE Members.FullName LIKE '%$text%'";
         $result = $this->da->execSelect($sql);
-        $members= array();
+        $members = array();
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $member= new Member();
+                $member = new Member();
                 $member->setMemberId($row['MemberId']);
                 $member->setFullName($row["FullName"]);
                 $member->setPhone($row["Phone"]);
@@ -206,7 +203,6 @@ class MemberDataSource
         }
         return $members;
     }
-
 
 
     public function suggest()
@@ -244,13 +240,16 @@ class MemberDataSource
 
     public function login(Member $member)
     {
-        $sql = "SELECT * FROM Members WHERE Members.Mobile = '{$member->getPhone()}' AND Members.Password = '{$member->getPassword()}')";
+        $sql = "SELECT * FROM Members WHERE Members.Phone = '{$member->getPhone()}' AND Members.Password = '{$member->getPassword()}'";
+        echo nl2br("\n$sql\n");
         $result = $this->da->execSelect($sql);
-
         if (mysqli_num_rows($result) > 0) {
-            return true;
+            while ($row = mysqli_fetch_assoc($result)) {
+                $memberId = $row['MemberId'];
+                return $memberId;
+            }
         } else {
-            return false;
+            return 0;
         }
     }
 

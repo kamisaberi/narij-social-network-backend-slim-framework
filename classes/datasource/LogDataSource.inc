@@ -1,7 +1,7 @@
 <?php
 
-require_once '../dataaccess/DataAccess.inc';
-require_once '../model/Log.inc';
+require_once __DIR__ .  '/../dataaccess/DataAccess.inc';
+require_once __DIR__ .  '/../model/Log.inc';
 
 /**
  * Created by PhpStorm.

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+$token = $requestData['token'];
+$title = $requestData['title'];
+$description = $requestData['description'];
+$tags = $requestData['tags'];
+
+<form action="post/create/video" method="post" enctype="multipart/form-data">
+
+    <input type="text" name="token" id="token" value="2c8b10f2d050a9069d6d357989cdb6e401378b1a68740e2a99eec37104e16baa6c657b96345c6e30b724cc6591bb60d237fc91bf4a1af09db5539ec40b3db394">
+    <input type="file" name="file" id="file" >
+    <input type="tel" name="title" id="title" value="TITLE 1">
+    <input type="tel" name="tags" id="tags" value="TAGS 1">
+    <input type="tel" name="description" id="description" value="DESC 1">
+    <br>
+    <input type="submit">
+
+</form>
+
+
+</body>
+</html>

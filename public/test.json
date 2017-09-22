@@ -1,0 +1,97 @@
+{
+  "message": {
+    "error": false,
+    "message": "successful"
+  },
+  "member": {
+    "memberId": "410",
+    "fullName": "ali reza",
+    "email": "kamisaberi@yahoo.com",
+    "phone": "09365982333",
+    "followers": [
+      {
+        "followId": "304",
+        "situation": "Confirm",
+        "time": "2017-09-21 00:40:56.897264",
+        "member": {
+          "memberId": "415",
+          "fullName": "hamed",
+          "email": "ahmadi9878@mail.ru",
+          "phone": "09124578963"
+        }
+      },
+      {
+        "followId": "331",
+        "situation": "Confirm",
+        "time": "2017-09-21 00:42:33.058882",
+        "member": {
+          "memberId": "416",
+          "fullName": "hadi",
+          "email": "karim.sh@noavar.com",
+          "phone": "09135478526"
+        }
+      }
+    ],
+    "followings": [
+      {
+        "followId": "302",
+        "situation": "Confirm",
+        "time": "2017-09-21 00:40:55.761508",
+        "member": {
+          "memberId": "411",
+          "fullName": "reza",
+          "email": "test1@yahoo.com",
+          "phone": "09365892454"
+        }
+      },
+      {
+        "followId": "303",
+        "situation": "Confirm",
+        "time": "2017-09-21 00:40:56.392377",
+        "member": {
+          "memberId": "415",
+          "fullName": "hamed",
+          "email": "ahmadi9878@mail.ru",
+          "phone": "09124578963"
+        }
+      },
+      {
+        "followId": "308",
+        "situation": "Confirm",
+        "time": "2017-09-21 00:40:58.402153",
+        "member": {
+          "memberId": "412",
+          "fullName": "ahmad",
+          "email": "ali@gmail.com",
+          "phone": "09112524568"
+        }
+      }
+    ],
+    "posts": [
+      {
+        "postId": "12",
+        "title": "\"T1\"",
+        "description": "\"CCCCC1\"",
+        "deleteTime": "2017-09-20 00:06:03",
+        "createTime": "2017-09-20 00:06:03",
+        "editTime": "2017-09-20 00:06:03"
+      },
+      {
+        "postId": "13",
+        "title": "\"T1\"",
+        "description": "\"CCCCC1\"",
+        "deleteTime": "2017-09-20 00:11:13",
+        "createTime": "2017-09-20 00:11:13",
+        "editTime": "2017-09-20 00:11:13"
+      },
+      {
+        "postId": "14",
+        "title": "TITLE 1",
+        "description": "DESC 1",
+        "deleteTime": "2017-09-20 00:12:31",
+        "createTime": "2017-09-20 00:12:31",
+        "editTime": "2017-09-20 00:12:31"
+      }
+    ]
+  }
+}

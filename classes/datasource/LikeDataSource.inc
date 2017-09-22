@@ -1,7 +1,7 @@
 <?php
 
-require_once '../dataaccess/DataAccess.inc';
-require_once '../model/Login.inc';
+require_once __DIR__ .  '/../dataaccess/DataAccess.inc';
+require_once __DIR__ .  '/../model/Login.inc';
 require_once 'LoginDataSource.inc';
 
 /**

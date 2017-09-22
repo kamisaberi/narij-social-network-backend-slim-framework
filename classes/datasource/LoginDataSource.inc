@@ -1,7 +1,7 @@
 <?php
 
-require_once '../dataaccess/DataAccess.inc';
-require_once '../model/Login.inc';
+require_once __DIR__ . '/../dataaccess/DataAccess.inc';
+require_once __DIR__ . '/../model/Login.inc';
 
 /**
  * Created by PhpStorm.
@@ -58,6 +58,15 @@ class LoginDataSource
         } else {
             return "INVALID";
         }
+    }
+
+
+    public function createLog(Login $login)
+    {
+        $sql = "INSERT INTO NARIJ_00005.Logins (Description, Token, Member, IP) VALUES ('{$login->getDescription()}','{$login->getToken()}','{$login->getMemberId()}','{$login->getIP()}')";
+
+        $this->da->exec($sql);
+        return true;
     }
 
 

@@ -1,8 +1,9 @@
 <?php
 
-require_once '../dataaccess/DataAccess.inc';
-require_once '../model/Post.inc';
+require_once __DIR__  .'/../dataaccess/DataAccess.inc';
+require_once __DIR__ . '/../model/Post.inc';
 require_once 'CommentDataSource.inc';
+require_once 'TagDataSource.inc';
 
 /**
  * Created by PhpStorm.
@@ -64,7 +65,7 @@ class PostDataSource
         $sql = "SELECT
 Posts.PostId,
 Posts.Title,
-Posts.Descruption,
+Posts.Description,
 Posts.MediaType,
 Posts.CreateTime,
 Posts.EditTime,
@@ -157,6 +158,30 @@ INNER JOIN MemberPost ON MemberPost.Post = Posts.PostId WHERE MemberPost.Member 
             }
         }
         return $posts;
+    }
+
+
+    public function create(Post $post, $memberId, $tags)
+    {
+        $sql = "INSERT INTO Posts (Title, Descruption, MediaType) VALUES ('{$post->getTitle()}','{$post->getDescription()}','{$post->getMediaType()->getTitle()}')";
+//        echo $sql;
+        $id = $this->da->exec($sql);
+        $this->assignPostToMember($id, $memberId);
+
+        $tags = explode("#", $tags);
+
+        $tds = new TagDataSource();
+        $tds->open();
+        $tds->assignTagsToPost($tags, $id);
+        $tds->close();
+
+    }
+
+
+    public function assignPostToMember($postId, $memberId)
+    {
+        $sql = "INSERT INTO MemberPost (Member, Post) VALUES ('$postId','$memberId')";
+        $this->da->exec($sql);
     }
 
 

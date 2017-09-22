@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Member.inc';
+
 /**
  * Created by PhpStorm.
  * User: kami
@@ -17,14 +19,7 @@ class Follow implements \JsonSerializable
      * @var int
      */
     private $member;
-    /**
-     * @var int
-     */
-    private $object;
-    /**
-     * @var string
-     */
-    private $objectType;
+
     /**
      * @var string
      */
@@ -33,6 +28,17 @@ class Follow implements \JsonSerializable
      * @var string
      */
     private $time;
+
+    /**
+     * Follow constructor.
+     */
+    public function __construct()
+    {
+        $this->followId = 0;
+        $this->member = new Member();
+        $this->situation = "Request";
+        $this->time = "";
+    }
 
     /**
      * @return int
@@ -67,38 +73,6 @@ class Follow implements \JsonSerializable
     }
 
     /**
-     * @return int
-     */
-    public function getObject()
-    {
-        return $this->object;
-    }
-
-    /**
-     * @param int $object
-     */
-    public function setObject($object)
-    {
-        $this->object = $object;
-    }
-
-    /**
-     * @return string
-     */
-    public function getObjectType()
-    {
-        return $this->objectType;
-    }
-
-    /**
-     * @param string $objectType
-     */
-    public function setObjectType($objectType)
-    {
-        $this->objectType = $objectType;
-    }
-
-    /**
      * @return string
      */
     public function getSituation()
@@ -129,20 +103,6 @@ class Follow implements \JsonSerializable
     {
         $this->time = $time;
     }
-
-    /**
-     * Follow constructor.
-     */
-    public function __construct()
-    {
-        $this->followId = 0;
-        $this->member = 0;
-        $this->object = 0;
-        $this->objectType = "Member";
-        $this->situation = "Request";
-        $this->time = "";
-    }
-
 
     /**
      * Specify data which should be serialized to JSON

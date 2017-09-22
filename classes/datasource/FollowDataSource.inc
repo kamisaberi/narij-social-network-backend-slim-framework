@@ -1,7 +1,7 @@
 <?php
 
-require_once '../dataaccess/DataAccess.inc';
-require_once '../model/Follow.inc';
+require_once __DIR__ . '/../dataaccess/DataAccess.inc';
+require_once __DIR__ . '/../model/Follow.inc';
 require_once 'LoginDataSource.inc';
 
 /**
@@ -31,7 +31,7 @@ class FollowDataSource
 
     public function getFollowersRequests($memberId)
     {
-        $sql = "SELECT * FROM Follows WHERE Follows.ObjectType='Member' AND Follows.Object=$memberId AND Follows.Situation = 'Request'";
+        $sql = "SELECT * FROM Follows INNER JOIN Members On Follows.Member = Members.MemberId  WHERE Follows.ObjectType='Member' AND Follows.Object=$memberId AND Follows.Situation = 'Request'";
         $result = $this->da->execSelect($sql);
         $requests = array();
         if (mysqli_num_rows($result) > 0) {
@@ -39,8 +39,14 @@ class FollowDataSource
                 $request = new Follow();
                 $request->setFollowId($row['FollowId']);
                 $request->setMember($row['Member']);
-                $request->setObject($row['Object']);
-                $request->setObjectType($row['ObjectType']);
+
+                $member = new Member();
+                $member->setMemberId($row['MemberId']);
+                $member->setFullName($row['FullName']);
+                $member->setPhone($row['Phone']);
+                $member->setEmail($row['Email']);
+
+                $request->setMember($member);
                 $request->setSituation($row['Situation']);
                 $request->setTime($row['Time']);
                 $requests[] = $request;
@@ -51,16 +57,25 @@ class FollowDataSource
 
     public function getFollowers($memberId)
     {
-        $sql = "SELECT * FROM Follows WHERE Follows.ObjectType='Member' AND Follows.Object=$memberId AND Follows.Situation = 'Confirm'";
+
+        $sql = "SELECT * FROM Follows INNER JOIN Members On Follows.Member = Members.MemberId WHERE Follows.ObjectType='Member' AND Follows.Object=$memberId AND Follows.Situation = 'Confirm'";
+        //$sql = "SELECT * FROM Follows WHERE Follows.ObjectType='Member' AND Follows.Object=$memberId AND Follows.Situation = 'Confirm'";
+
         $result = $this->da->execSelect($sql);
         $requests = array();
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 $request = new Follow();
                 $request->setFollowId($row['FollowId']);
-                $request->setMember($row['Member']);
-                $request->setObject($row['Object']);
-                $request->setObjectType($row['ObjectType']);
+
+                $member = new Member();
+                $member->setMemberId($row['MemberId']);
+                $member->setFullName($row['FullName']);
+                $member->setPhone($row['Phone']);
+                $member->setEmail($row['Email']);
+
+                $request->setMember($member);
+
                 $request->setSituation($row['Situation']);
                 $request->setTime($row['Time']);
                 $requests[] = $request;
@@ -74,29 +89,37 @@ class FollowDataSource
         $sql = "SELECT COUNT (*) as cnt FROM Follows WHERE Follows.ObjectType='Member' AND Follows.Object=$memberId AND Follows.Situation = 'Confirm'";
         $result = $this->da->execSelect($sql);
         $requests = array();
-        $cnt=0;
+        $cnt = 0;
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $cnt= $row['cnt'];
+                $cnt = $row['cnt'];
             }
         }
         return cnt;
     }
 
 
-
     public function getFollowings($memberId)
     {
-        $sql = "SELECT * FROM Follows WHERE  Follows.Member=$memberId AND Follows.Situation = 'Confirm'";
+        //$sql = "SELECT * FROM Follows WHERE  Follows.Member=$memberId AND Follows.Situation = 'Confirm'";
+        $sql = "SELECT * FROM Follows INNER JOIN Members On Follows.Object = Members.MemberId WHERE Follows.Member=$memberId AND Follows.Situation = 'Confirm'";
+        //$sql = "SELECT * FROM Follows WHERE Follows.ObjectType='Member' AND Follows.Object=$memberId AND Follows.Situation = 'Confirm'";
+
         $result = $this->da->execSelect($sql);
         $requests = array();
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 $request = new Follow();
                 $request->setFollowId($row['FollowId']);
-                $request->setMember($row['Member']);
-                $request->setObject($row['Object']);
-                $request->setObjectType($row['ObjectType']);
+
+                $member = new Member();
+                $member->setMemberId($row['MemberId']);
+                $member->setFullName($row['FullName']);
+                $member->setPhone($row['Phone']);
+                $member->setEmail($row['Email']);
+
+                $request->setMember($member);
+
                 $request->setSituation($row['Situation']);
                 $request->setTime($row['Time']);
                 $requests[] = $request;
@@ -113,7 +136,7 @@ class FollowDataSource
         $cnt = 0;
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                 $cnt = $row['cnt'];
+                $cnt = $row['cnt'];
             }
         }
         return $cnt;
@@ -136,7 +159,7 @@ class FollowDataSource
 
     public function unfollow($object, $memberId)
     {
-        $sql = "DELETE FROM NARIJ_00003.Follows WHERE Object='$object' AND Member = '$memberId'";
+        $sql = "DELETE FROM Follows WHERE Object='$object' AND Member = '$memberId'";
         $this->da->exec($sql);
         return true;
     }
