@@ -6,13 +6,13 @@
  * Date: 9/11/2017
  * Time: 3:17 AM
  */
-class Log implements \JsonSerializable
+class Message implements \JsonSerializable
 {
 
     /**
      * @var int
      */
-    private $logId;
+    private $messageId;
     /**
      * @var string
      */
@@ -35,7 +35,7 @@ class Log implements \JsonSerializable
      */
     public function __construct()
     {
-        $this->logId = 0;
+        $this->messageId = 0;
         $this->content = "";
         $this->member = new Member();
         $this->time = "";
@@ -45,17 +45,17 @@ class Log implements \JsonSerializable
     /**
      * @return int
      */
-    public function getLogId()
+    public function getMessageId()
     {
-        return $this->logId;
+        return $this->messageId;
     }
 
     /**
-     * @param int $logId
+     * @param int $messageId
      */
-    public function setLogId($logId)
+    public function setMessageId($messageId)
     {
-        $this->logId = $logId;
+        $this->messageId = $messageId;
     }
 
     /**

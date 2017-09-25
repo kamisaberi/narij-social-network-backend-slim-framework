@@ -241,15 +241,20 @@ class MemberDataSource
     public function login(Member $member)
     {
         $sql = "SELECT * FROM Members WHERE Members.Phone = '{$member->getPhone()}' AND Members.Password = '{$member->getPassword()}'";
-        echo nl2br("\n$sql\n");
+        //echo nl2br("\n$sql\n");
         $result = $this->da->execSelect($sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $memberId = $row['MemberId'];
-                return $memberId;
+                $member = new Member();
+                $member->setMemberId($row['MemberId']);
+                $member->setPhone($row['Phone']);
+                $member->setEmail($row['Email']);
+                $member->setFullName($row['FullName']);
+                $member->setPassword($row['Password']);
+                return $member;
             }
         } else {
-            return 0;
+            return null;
         }
     }
 

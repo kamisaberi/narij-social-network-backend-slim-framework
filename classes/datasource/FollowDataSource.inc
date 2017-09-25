@@ -150,6 +150,19 @@ class FollowDataSource
 
     }
 
+    public function followOrNot($object, $memberId)
+    {
+        $sql = "SELECT * FROM Follows WHERE Object='$object' AND Member = '$memberId'";
+        $result = $this->da->execSelect($sql);
+        if (mysqli_num_rows($result) == 0) {
+            $this->follow($object, $memberId);
+            return true;
+        } else {
+            $this->unfollow($object, $memberId);
+            return false;
+        }
+    }
+
     public function follow($object, $memberId)
     {
         $sql = "INSERT INTO Follows (Object , Member , ObjectType, Situation,) VALUES ('$object','$memberId','Member','Request')";

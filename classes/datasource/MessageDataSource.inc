@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../dataaccess/DataAccess.inc';
-require_once __DIR__ . '/../model/Log.inc';
+require_once __DIR__ . '/../model/Message.inc';
 
 /**
  * Created by PhpStorm.
@@ -9,7 +9,7 @@ require_once __DIR__ . '/../model/Log.inc';
  * Date: 8/25/2017
  * Time: 5:29 AM
  */
-class LogDataSource
+class MessageDataSource
 {
     public $da;
 
@@ -29,42 +29,42 @@ class LogDataSource
     }
 
 
-    public function getLogs($memberId)
+    public function getMessages($memberId)
     {
         $sql = "SELECT
-`Logs`.LogId,
-`Logs`.Member,
-`Logs`.Object,
-`Logs`.ObjectType,
-`Logs`.Content,
-`Logs`.Time,
-`Logs`.Parent,
+Messages.MessageId,
+Messages.Member,
+Messages.Object,
+Messages.ObjectType,
+Messages.Content,
+Messages.Time,
+Messages.Parent,
 Members.MemberId,
 Members.FullName,
 Members.Phone,
 Members.Email,
 Members.`Password`
-FROM `Logs` INNER JOIN Members On `Logs`.Member = Members.MemberId WHERE `Logs`.ObjectType='Member' AND  Object='$memberId'";
+FROM Messages INNER JOIN Members On Messages.Member = Members.MemberId WHERE Messages.ObjectType='Member' AND  Object='$memberId'";
 
         $result = $this->da->execSelect($sql);
-        $logs = array();
+        $messages = array();
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $log = new Log();
-                $log->setLogId($row['LogId']);
-                $log->setContent($row['Content']);
-                $log->setTime($row['Time']);
-                $log->setParent($row['Parent']);
+                $message = new Message();
+                $message->setMessageId($row['MessageId']);
+                $message->setContent($row['Content']);
+                $message->setTime($row['Time']);
+                $message->setParent($row['Parent']);
                 $member = new Member();
                 $member->setMemberId($row['MemberId']);
                 $member->setFullName($row['FullName']);
                 $member->setPhone($row['Phone']);
                 $member->setEmail($row['Email']);
-                $log->setMember($member);
-                $logs[] = $log;
+                $message->setMember($member);
+                $messages[] = $message;
             }
         }
-        return $logs;
+        return $messages;
     }
 
 
