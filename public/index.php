@@ -648,7 +648,7 @@ $app->post("/login", function (Request $request, Response $response) {
         $member = new Member();
         $member->setPhone($phone);
         $member->setPassword($password);
-        $member= $mds->login($member);
+        $member = $mds->login($member);
         $mds->close();
 
         $token = "";
@@ -1146,6 +1146,47 @@ $app->post("/posts/viral", function (Request $request, Response $response) {
 
 });
 
+
+
+
+
+//    @FormUrlEncoded
+//    @POST("posts/viral")
+//    Call < WebServiceMessage> getPosts(@Field("token") String token);
+
+$app->post("/posts/get/all", function (Request $request, Response $response) {
+
+    if (isTheseParametersAvailable(array('token'))) {
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+        $psts = array();
+        $pds = new PostDataSource();
+        $pds->open();
+        $psts = $pds->getViral();
+        $posts = array();
+        foreach ($psts as $pst) {
+            $post = array();
+            $post["postId"] = $pst->getPostId();
+            $post["title"] = $pst->getTitle();
+            $post["description"] = $pst->getDescription();
+            $post["description"] = $pst->getDescription();
+            $post["deleteTime"] = $post->getDeleteTime();
+            $post["createTime"] = $post->getCreateTime();
+            $post["editTime"] = $post->getEditTime();
+            array_push($posts, $post);
+        }
+        $response->getBody()->write(json_encode(array("posts" => $posts)));
+    }
+
+});
+
+
+
+
+
+
+
+
 //    @FormUrlEncoded
 //    @POST("post/share")
 //    Call<WebServiceMessage> share(@Field("token") String token, @Field("receiver") long receiver, @Field("post") long post);
@@ -1395,6 +1436,55 @@ $app->post("/messages/get/all", function (Request $request, Response $response) 
 
 
 //    @FormUrlEncoded
+//    @POST("messages/get/conversation")
+//    Call<MessagesRetrofitModel> getConversation(@Field("token") String token, @Field("memberId") long memberId);
+$app->post("/messages/get/conversation", function (Request $request, Response $response) {
+
+    require_once '../classes/datasource/MessageDataSource.inc';
+    if (isTheseParametersAvailable(array('token', 'memberId'))) {
+        $requestData = $request->getParsedBody();
+        $token = $requestData['token'];
+        $memberId = $requestData['memberId'];
+
+        $lds = new LoginDataSource();
+        $lds->open();
+        $me = $lds->getMemberIdBasedOnToken($token);
+        $lds->close();
+
+        $lds = new MessageDataSource();
+        $lds->open();
+        $msgs = $lds->getConversation($me, $memberId);
+        $lds->close();
+
+        $messages = array();
+        foreach ($msgs as $msg) {
+            $message = array();
+            $message["logId"] = $msg->getLogId();
+            $message["content"] = $msg->getContent();
+            $message["time"] = $msg->getTime();
+            $message["parent"] = $msg->getParent();
+            $mem = array();
+            $mem['memberId'] = $message->getMember()->getMemberId();
+            $mem['fullName'] = $message->getMember()->getFullName();
+            $mem['phone'] = $message->getMember()->getPhone();
+            $mem['email'] = $message->getMember()->getEmail();
+            $message['member'] = $mem;
+            array_push($messages, $message);
+        }
+
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $res2 = array();
+        $res2['message'] = $res1;
+        $res2['messages'] = $messages;
+        $response->getBody()->write(json_encode($res2));
+    }
+
+});
+
+
+//    @FormUrlEncoded
 //    @POST("followers/get/requests")
 //    Call < WebServiceMessage> getFollowRequests(@Field("token") String token);
 
@@ -1516,10 +1606,10 @@ $app->post("/followers/get/list", function (Request $request, Response $response
             $lds = new LoginDataSource();
             $lds->open();
             $memberId = $lds->getMemberIdBasedOnToken($token);
+
             $lds->close();
         }
-        //echo  $memberId . "<br>";
-
+        //echo  "<br>" . $memberId . "<br>";
         $fds = new FollowDataSource();
         $fds->open();
         $rqusts = $fds->getFollowers($memberId);

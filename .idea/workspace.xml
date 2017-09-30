@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/public/index.php" line="1565" />
-    <bookmark url="file://$PROJECT_DIR$/public/index.php" line="1180" />
+    <bookmark url="file://$PROJECT_DIR$/public/index.php" line="1655" />
+    <bookmark url="file://$PROJECT_DIR$/public/index.php" line="1221" />
     <bookmark url="file://$PROJECT_DIR$/public/index.php" line="637" />
+    <bookmark url="file://$PROJECT_DIR$/public/index.php" line="1607" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4778ecc6-6817-4109-9284-9f62608c7a65" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/classes/datasource/MessageDataSource.inc" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/classes/model/Message.inc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/test1.json" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources/a7e44863-97be-4519-937b-d25a2846c42c.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources/af7486c6-b048-4d73-a1b2-dd602a3c5397.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources/85293a25-f042-48a2-a794-84c5c78b10e6.xml" afterPath="$PROJECT_DIR$/.idea/dataSources/85293a25-f042-48a2-a794-84c5c78b10e6.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/datasource/FollowDataSource.inc" afterPath="$PROJECT_DIR$/classes/datasource/FollowDataSource.inc" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/datasource/LogDataSource.inc" afterPath="$PROJECT_DIR$/classes/datasource/LogDataSource.inc" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/datasource/MemberDataSource.inc" afterPath="$PROJECT_DIR$/classes/datasource/MemberDataSource.inc" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/model/Log.inc" afterPath="$PROJECT_DIR$/classes/model/Log.inc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/dataaccess/DataAccess.inc" afterPath="$PROJECT_DIR$/classes/dataaccess/DataAccess.inc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/datasource/LoginDataSource.inc" afterPath="$PROJECT_DIR$/classes/datasource/LoginDataSource.inc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/datasource/MessageDataSource.inc" afterPath="$PROJECT_DIR$/classes/datasource/MessageDataSource.inc" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/index.php" afterPath="$PROJECT_DIR$/public/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/test.json" afterPath="$PROJECT_DIR$/public/test.json" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -82,11 +79,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="650" column="25" lean-forward="false" selection-start-line="650" selection-start-column="25" selection-end-line="650" selection-end-column="25" />
+            <state relative-caret-position="155">
+              <caret line="1154" column="40" lean-forward="false" selection-start-line="1154" selection-start-column="40" selection-end-line="1154" selection-end-column="40" />
               <folding>
                 <element signature="e#6#57#0#PHP" expanded="true" />
               </folding>
@@ -94,11 +91,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/login.html">
+      <file leaf-file-name="LoginDataSource.inc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classes/datasource/LoginDataSource.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="7" lean-forward="true" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+            <state relative-caret-position="393">
+              <caret line="64" column="43" lean-forward="true" selection-start-line="64" selection-start-column="43" selection-end-line="64" selection-end-column="43" />
+              <folding>
+                <marker date="1506719763325" expanded="true" signature="522:575" ph="SELECT Membe... Logins" />
+                <marker date="1506719763325" expanded="true" signature="522:612" ph="SELECT Membe... Logins" />
+                <marker date="1506719763325" expanded="true" signature="959:1008" ph="SELECT * FRO... Logins" />
+                <marker date="1506719763325" expanded="true" signature="959:1038" ph="SELECT * FRO... Logins" />
+                <marker date="1506719763325" expanded="true" signature="1532:1690" ph="INSERT INTO NARIJ_00005.Logins... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DataAccess.inc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classes/dataaccess/DataAccess.inc">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="14" column="75" lean-forward="false" selection-start-line="14" selection-start-column="75" selection-end-line="14" selection-end-column="75" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="getFollowers.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/getFollowers.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -107,7 +130,7 @@
       <file leaf-file-name="MemberDataSource.inc" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classes/datasource/MemberDataSource.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="461">
+            <state relative-caret-position="4131">
               <caret line="243" column="10" lean-forward="false" selection-start-line="243" selection-start-column="10" selection-end-line="243" selection-end-column="10" />
               <folding>
                 <marker date="1506295249858" expanded="true" signature="727:784" ph="SELECT * FRO... Members" />
@@ -151,10 +174,14 @@
       <file leaf-file-name="MessageDataSource.inc" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classes/datasource/MessageDataSource.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="31" column="20" lean-forward="false" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="31" />
+            <state relative-caret-position="1700">
+              <caret line="100" column="48" lean-forward="false" selection-start-line="100" selection-start-column="48" selection-end-line="100" selection-end-column="48" />
               <folding>
-                <marker date="1506229742285" expanded="true" signature="517:863" ph="SELECT Messa... Messages" />
+                <marker date="1506582706364" expanded="true" signature="517:863" ph="SELECT Messa... Messages" />
+                <marker date="1506582706364" expanded="true" signature="1772:2119" ph="SELECT Messa... Messages" />
+                <marker date="1506582706364" expanded="true" signature="1772:2123" ph="SELECT Messa... Messages" />
+                <marker date="1506582706364" expanded="true" signature="1772:2135" ph="SELECT Messa... Messages" />
+                <marker date="1506582706364" expanded="true" signature="1772:2136" ph="SELECT Messa... Messages" />
               </folding>
             </state>
           </provider>
@@ -163,18 +190,8 @@
       <file leaf-file-name="Log.inc" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classes/model/Log.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="682">
+            <state relative-caret-position="2176">
               <caret line="128" column="28" lean-forward="false" selection-start-line="128" selection-start-column="28" selection-end-line="128" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Message.inc" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/classes/model/Message.inc">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-457">
-              <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -183,7 +200,7 @@
       <file leaf-file-name="LogDataSource.inc" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classes/datasource/LogDataSource.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="631">
+            <state relative-caret-position="1054">
               <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
               <folding>
                 <marker date="1506225835403" expanded="true" signature="505:770" ph="SELECT `Logs... Logs" />
@@ -193,21 +210,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Follow.inc" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/classes/model/Follow.inc">
+      <file leaf-file-name="test.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/test.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="3" lean-forward="false" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
+            <state relative-caret-position="427">
+              <caret line="89" column="32" lean-forward="true" selection-start-line="89" selection-start-column="32" selection-end-line="89" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.json" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/public/test.json">
+      <file leaf-file-name="test1.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/test1.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="4" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+            <state relative-caret-position="85">
+              <caret line="5" column="9" lean-forward="true" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -226,11 +243,13 @@
     <findStrings>
       <find>enterPhoneNumber</find>
       <find>$_SERVER</find>
-      <find>login</find>
       <find>follo</find>
       <find>sugge</find>
       <find>(&quot;followings/follow&quot;)</find>
       <find>@POST(&quot;logs/get/all&quot;)</find>
+      <find>followers</find>
+      <find>login</find>
+      <find>vira</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -252,14 +271,12 @@
         <option value="$PROJECT_DIR$/classes/model/Comment.inc" />
         <option value="$PROJECT_DIR$/classes/model/Post.inc" />
         <option value="$PROJECT_DIR$/classes/model/Tag.inc" />
-        <option value="$PROJECT_DIR$/classes/dataaccess/DataAccess.inc" />
         <option value="$PROJECT_DIR$/public/veriifyCode.html" />
         <option value="$PROJECT_DIR$/public/registerTest.html" />
         <option value="$PROJECT_DIR$/public/createPassword.html" />
         <option value="$PROJECT_DIR$/public/createName.html" />
         <option value="$PROJECT_DIR$/public/createEmail.html" />
         <option value="$PROJECT_DIR$/classes/model/Login.inc" />
-        <option value="$PROJECT_DIR$/classes/datasource/LoginDataSource.inc" />
         <option value="$PROJECT_DIR$/public/login.html" />
         <option value="$PROJECT_DIR$/public/createTextPost.html" />
         <option value="$PROJECT_DIR$/classes/datasource/CommentDataSource.inc" />
@@ -278,10 +295,13 @@
         <option value="$PROJECT_DIR$/classes/model/Log.inc" />
         <option value="$PROJECT_DIR$/classes/model/Message.inc" />
         <option value="$PROJECT_DIR$/classes/datasource/LogDataSource.inc" />
-        <option value="$PROJECT_DIR$/classes/datasource/MessageDataSource.inc" />
-        <option value="$PROJECT_DIR$/public/index.php" />
         <option value="$PROJECT_DIR$/classes/datasource/MemberDataSource.inc" />
         <option value="$PROJECT_DIR$/public/test.json" />
+        <option value="$PROJECT_DIR$/classes/datasource/MessageDataSource.inc" />
+        <option value="$PROJECT_DIR$/classes/dataaccess/DataAccess.inc" />
+        <option value="$PROJECT_DIR$/public/test1.json" />
+        <option value="$PROJECT_DIR$/classes/datasource/LoginDataSource.inc" />
+        <option value="$PROJECT_DIR$/public/index.php" />
       </list>
     </option>
   </component>
@@ -353,8 +373,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -486,16 +506,16 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\NarijWebService\classes\datasource" />
-      <recent name="C:\xampp\htdocs\NarijWebService\classes\model" />
-      <recent name="C:\xampp\htdocs\NarijWebService\public" />
-      <recent name="C:\xampp\htdocs\NarijWebService\classes" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\NarijWebService\classes\datasource" />
       <recent name="C:\xampp\htdocs\NarijWebService\classes\dataaccess" />
       <recent name="C:\xampp\htdocs\NarijWebService\classes\model" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\NarijWebService\public" />
+      <recent name="C:\xampp\htdocs\NarijWebService\classes\datasource" />
+      <recent name="C:\xampp\htdocs\NarijWebService\classes\model" />
+      <recent name="C:\xampp\htdocs\NarijWebService\classes" />
     </key>
   </component>
   <component name="RunManager">
@@ -579,25 +599,28 @@
       <workItem from="1505358448544" duration="128000" />
       <workItem from="1505431192516" duration="32965000" />
       <workItem from="1505771173436" duration="54665000" />
-      <workItem from="1506294250635" duration="1609000" />
+      <workItem from="1506294250635" duration="2241000" />
+      <workItem from="1506564888745" duration="56000" />
+      <workItem from="1506578287820" duration="3187000" />
+      <workItem from="1506717383130" duration="3233000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="251679000" />
+    <option name="totallyTimeSpent" value="258787000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20682302" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13965885" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1444563" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23618636" sideWeight="0.5021322" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41333333" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1401919" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24035281" sideWeight="0.4978678" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23943663" sideWeight="0.4978678" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -650,14 +673,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/classes/model/MediaType.inc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="28" column="5" lean-forward="true" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/classes/model/PostCategory.inc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -678,7 +693,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -738,7 +752,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="88" column="9" lean-forward="false" selection-start-line="88" selection-start-column="9" selection-end-line="88" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -746,7 +759,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -823,14 +835,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classes/dataaccess/DataAccess.inc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="5" lean-forward="false" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/classes/model/Login.inc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="227">
@@ -866,20 +870,6 @@
           <caret line="4" column="25" lean-forward="true" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
           <folding>
             <marker date="1505852317779" expanded="true" signature="708:803" ph="INSERT INTO NARIJ_00003.Likes... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classes/datasource/LoginDataSource.inc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="867">
-          <caret line="51" column="32" lean-forward="false" selection-start-line="51" selection-start-column="32" selection-end-line="51" selection-end-column="32" />
-          <folding>
-            <marker date="1505773405589" expanded="true" signature="522:575" ph="SELECT Membe... Logins" />
-            <marker date="1505773405589" expanded="true" signature="522:612" ph="SELECT Membe... Logins" />
-            <marker date="1505773405589" expanded="true" signature="940:989" ph="SELECT * FRO... Logins" />
-            <marker date="1505773405589" expanded="true" signature="940:1019" ph="SELECT * FRO... Logins" />
-            <marker date="1505773405589" expanded="true" signature="1513:1683" ph="INSERT INTO NARIJ_00005.Logins... " />
           </folding>
         </state>
       </provider>
@@ -926,14 +916,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/getFollowers.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -955,7 +937,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3638">
           <caret line="214" column="33" lean-forward="false" selection-start-line="214" selection-start-column="20" selection-end-line="214" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -967,19 +948,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classes/datasource/MessageDataSource.inc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="20" lean-forward="false" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="31" />
-          <folding>
-            <marker date="1506229742285" expanded="true" signature="517:863" ph="SELECT Messa... Messages" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/classes/model/Message.inc">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-457">
+        <state relative-caret-position="527">
           <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding />
         </state>
@@ -988,7 +959,7 @@
     <entry file="file://$PROJECT_DIR$/public/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
-          <caret line="19" column="7" lean-forward="true" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+          <caret line="19" column="7" lean-forward="false" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
           <folding />
         </state>
       </provider>
@@ -1013,7 +984,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/classes/model/Log.inc">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
+        <state relative-caret-position="2176">
           <caret line="128" column="28" lean-forward="false" selection-start-line="128" selection-start-column="28" selection-end-line="128" selection-end-column="28" />
           <folding />
         </state>
@@ -1049,7 +1020,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/classes/datasource/LogDataSource.inc">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="631">
+        <state relative-caret-position="1054">
           <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
           <folding>
             <marker date="1506225835403" expanded="true" signature="505:770" ph="SELECT `Logs... Logs" />
@@ -1058,19 +1029,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="650" column="25" lean-forward="false" selection-start-line="650" selection-start-column="25" selection-end-line="650" selection-end-column="25" />
-          <folding>
-            <element signature="e#6#57#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/classes/datasource/MemberDataSource.inc">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
+        <state relative-caret-position="4131">
           <caret line="243" column="10" lean-forward="false" selection-start-line="243" selection-start-column="10" selection-end-line="243" selection-end-column="10" />
           <folding>
             <marker date="1506295249858" expanded="true" signature="727:784" ph="SELECT * FRO... Members" />
@@ -1110,11 +1071,73 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/classes/datasource/MessageDataSource.inc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1700">
+          <caret line="100" column="48" lean-forward="false" selection-start-line="100" selection-start-column="48" selection-end-line="100" selection-end-column="48" />
+          <folding>
+            <marker date="1506582706364" expanded="true" signature="517:863" ph="SELECT Messa... Messages" />
+            <marker date="1506582706364" expanded="true" signature="1772:2119" ph="SELECT Messa... Messages" />
+            <marker date="1506582706364" expanded="true" signature="1772:2123" ph="SELECT Messa... Messages" />
+            <marker date="1506582706364" expanded="true" signature="1772:2135" ph="SELECT Messa... Messages" />
+            <marker date="1506582706364" expanded="true" signature="1772:2136" ph="SELECT Messa... Messages" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/getFollowers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/test.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="4" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+        <state relative-caret-position="427">
+          <caret line="89" column="32" lean-forward="true" selection-start-line="89" selection-start-column="32" selection-end-line="89" selection-end-column="32" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/test1.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="9" lean-forward="true" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/dataaccess/DataAccess.inc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="75" lean-forward="false" selection-start-line="14" selection-start-column="75" selection-end-line="14" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/datasource/LoginDataSource.inc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="393">
+          <caret line="64" column="43" lean-forward="true" selection-start-line="64" selection-start-column="43" selection-end-line="64" selection-end-column="43" />
+          <folding>
+            <marker date="1506719763325" expanded="true" signature="522:575" ph="SELECT Membe... Logins" />
+            <marker date="1506719763325" expanded="true" signature="522:612" ph="SELECT Membe... Logins" />
+            <marker date="1506719763325" expanded="true" signature="959:1008" ph="SELECT * FRO... Logins" />
+            <marker date="1506719763325" expanded="true" signature="959:1038" ph="SELECT * FRO... Logins" />
+            <marker date="1506719763325" expanded="true" signature="1532:1690" ph="INSERT INTO NARIJ_00005.Logins... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="1154" column="40" lean-forward="false" selection-start-line="1154" selection-start-column="40" selection-end-line="1154" selection-end-column="40" />
+          <folding>
+            <element signature="e#6#57#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

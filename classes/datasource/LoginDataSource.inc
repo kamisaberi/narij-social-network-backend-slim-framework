@@ -32,6 +32,7 @@ class LoginDataSource
     public function getMemberIdBasedOnToken($token)
     {
         $sql = "SELECT Member FROM Logins WHERE Logins.Token='$token' ORDER BY Logins.LoginId DESC LIMIT 1";
+        echo $sql;
         $result = $this->da->execSelect($sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -63,7 +64,7 @@ class LoginDataSource
 
     public function createLog(Login $login)
     {
-        $sql = "INSERT INTO NARIJ_00005.Logins (Description, Token, Member, IP) VALUES ('{$login->getDescription()}','{$login->getToken()}','{$login->getMemberId()}','{$login->getIP()}')";
+        $sql = "INSERT INTO Logins (Description, Token, Member, IP) VALUES ('{$login->getDescription()}','{$login->getToken()}','{$login->getMemberId()}','{$login->getIP()}')";
 
         $this->da->exec($sql);
         return true;

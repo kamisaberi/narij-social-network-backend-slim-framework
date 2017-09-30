@@ -12,7 +12,7 @@ class DataAccess
 
     public function open()
     {
-        $this->connection = mysqli_connect("127.0.0.1", "root", "", "NARIJ_00005");
+        $this->connection = mysqli_connect("127.0.0.1", "root", "", "NARIJ_00007");
     }
 
     public function exec($sql)
