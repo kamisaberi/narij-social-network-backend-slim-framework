@@ -41,12 +41,19 @@ function isTheseParametersAvailable($required_fields)
     return true;
 }
 
-function moveUploadedFile($directory, UploadedFile $uploadedFile)
+function moveUploadedFile($directory, UploadedFile $uploadedFile, $filename = '')
 {
     $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
     $basename = bin2hex(rand(10000, 99999)); // see http://php.net/manual/en/function.random-bytes.php
 //    $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
-    $filename = sprintf('%s.%0.8s', $basename, $extension);
+
+
+    if ($filename == '') {
+        $filename = sprintf('%s.%0.8s', $basename, $extension);
+    } else {
+        $filename = sprintf('%s.%0.8s', $filename, $extension);
+    }
+
 
     $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 
@@ -444,29 +451,45 @@ $app->post("/profile/set/location", function (Request $request, Response $respon
 //    Call < WebServiceMessage> setProfilePhoto(@Field("token") String token, @Field("photo") String photo);
 $app->post("/profile/set/photo", function (Request $request, Response $response) {
 
-    if (isTheseParametersAvailable(array('token'))) {
+    require_once '../classes/datasource/MemberDataSource.inc';
+    if (isTheseParametersAvailable(array('phone'))) {
 
         $requestData = $request->getParsedBody();
-        $token = $requestData['token'];
+        $phone = $requestData['phone'];
 
 
         $directory = $this->get('upload_directory');
         $uploadedFiles = $request->getUploadedFiles();
         $uploadedFile = $uploadedFiles['file'];
         $filename = "";
+        $memberId = 0;
+//        $mds = new MemberDataSource();
+//        $mds->open();
+//        $memberId = $mds->getMemberIdBasedOnPhone(trim($phone));
+//        $mds->close();
+
         if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-            $filename = moveUploadedFile($directory, $uploadedFile);
+
+            $mds = new MemberDataSource();
+            $mds->open();
+            $memberId = $mds->getMemberIdBasedOnPhone(trim($phone, '"'));
+//            echo $memberId;
+            $mds->close();
+            $directory = $directory . DIRECTORY_SEPARATOR . $memberId;
+            if (file_exists($directory) == false) {
+                mkdir($directory, 777);
+            }
+
+            $filename = moveUploadedFile($directory, $uploadedFile, 'Profile');
         }
 
 
-        $mds = new MemberDataSource();
-        $mds->open();
-        $mds->updateProfilePhoto($token, $filename);
-        $mds->close();
+        //$mds->updateProfilePhoto($phone, $filename);
+
 
         $res1 = array();
         $res1["error"] = false;
-        $res1["message"] = "successful";
+        $res1["message"] = trim($phone, '"') . " " . $memberId;
         $response->getBody()->write(json_encode($res1));
 
     }
@@ -1104,13 +1127,27 @@ $app->post("/post/search", function (Request $request, Response $response) {
             $post["postId"] = $pst->getPostId();
             $post["title"] = $pst->getTitle();
             $post["description"] = $pst->getDescription();
-            $post["description"] = $pst->getDescription();
-            $post["deleteTime"] = $post->getDeleteTime();
-            $post["createTime"] = $post->getCreateTime();
-            $post["editTime"] = $post->getEditTime();
+            $post["deleteTime"] = $pst->getDeleteTime();
+            $post["createTime"] = $pst->getCreateTime();
+            $post["mediaType"] = $pst->getMediaType();
+            $post["editTime"] = $pst->getEditTime();
+            $mem = array();
+            $mem['memberId'] = $pst->getMember()->getMemberId();
+            $mem['fullName'] = $pst->getMember()->getFullName();
+            $mem['email'] = $pst->getMember()->getEmail();
+            $mem['phone'] = $pst->getMember()->getPhone();
+            $post["member"] = $mem;
+
             array_push($posts, $post);
         }
-        $response->getBody()->write(json_encode(array("posts" => $posts)));
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $res2 = array();
+        $res2["message"] = $res1;
+        $res2['posts'] = $posts;
+
+        $response->getBody()->write(json_encode($res2));
     }
 
 });
@@ -1121,33 +1158,48 @@ $app->post("/post/search", function (Request $request, Response $response) {
 //    Call < WebServiceMessage> getViral(@Field("token") String token);
 
 $app->post("/posts/viral", function (Request $request, Response $response) {
-
-    if (isTheseParametersAvailable(array('token'))) {
+    require_once '../classes/datasource/PostDataSource.inc';
+    if (isTheseParametersAvailable(array('token', 'type'))) {
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
+        $type = $requestData['type'];
         $psts = array();
         $pds = new PostDataSource();
         $pds->open();
-        $psts = $pds->getViral();
+        $psts = $pds->getViral($type);
         $posts = array();
         foreach ($psts as $pst) {
             $post = array();
             $post["postId"] = $pst->getPostId();
             $post["title"] = $pst->getTitle();
             $post["description"] = $pst->getDescription();
-            $post["description"] = $pst->getDescription();
-            $post["deleteTime"] = $post->getDeleteTime();
-            $post["createTime"] = $post->getCreateTime();
-            $post["editTime"] = $post->getEditTime();
+            $post["deleteTime"] = $pst->getDeleteTime();
+            $post["createTime"] = $pst->getCreateTime();
+            $post["mediaType"] = $pst->getMediaType();
+            $post["editTime"] = $pst->getEditTime();
+            $mem = array();
+            $mem['memberId'] = $pst->getMember()->getMemberId();
+            $mem['fullName'] = $pst->getMember()->getFullName();
+            $mem['email'] = $pst->getMember()->getEmail();
+            $mem['phone'] = $pst->getMember()->getPhone();
+            $post["member"] = $mem;
+
             array_push($posts, $post);
         }
-        $response->getBody()->write(json_encode(array("posts" => $posts)));
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $res2 = array();
+        $res2["message"] = $res1;
+        $res2['posts'] = $posts;
+
+        $response->getBody()->write(json_encode($res2));
+//        $response->getBody()->write(json_encode(array("posts" => $posts)));
     }
 
+
+
 });
-
-
-
 
 
 //    @FormUrlEncoded
@@ -1156,35 +1208,45 @@ $app->post("/posts/viral", function (Request $request, Response $response) {
 
 $app->post("/posts/get/all", function (Request $request, Response $response) {
 
+    require_once '../classes/datasource/PostDataSource.inc';
     if (isTheseParametersAvailable(array('token'))) {
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
         $psts = array();
         $pds = new PostDataSource();
         $pds->open();
-        $psts = $pds->getViral();
+        $psts = $pds->getPosts();
         $posts = array();
         foreach ($psts as $pst) {
             $post = array();
             $post["postId"] = $pst->getPostId();
             $post["title"] = $pst->getTitle();
             $post["description"] = $pst->getDescription();
-            $post["description"] = $pst->getDescription();
-            $post["deleteTime"] = $post->getDeleteTime();
-            $post["createTime"] = $post->getCreateTime();
-            $post["editTime"] = $post->getEditTime();
+            $post["deleteTime"] = $pst->getDeleteTime();
+            $post["createTime"] = $pst->getCreateTime();
+            $post["mediaType"] = $pst->getMediaType();
+            $post["editTime"] = $pst->getEditTime();
+            $mem = array();
+            $mem['memberId'] = $pst->getMember()->getMemberId();
+            $mem['fullName'] = $pst->getMember()->getFullName();
+            $mem['email'] = $pst->getMember()->getEmail();
+            $mem['phone'] = $pst->getMember()->getPhone();
+            $post["member"] = $mem;
+
             array_push($posts, $post);
         }
-        $response->getBody()->write(json_encode(array("posts" => $posts)));
+        $res1 = array();
+        $res1["error"] = false;
+        $res1["message"] = "successful";
+        $res2 = array();
+        $res2["message"] = $res1;
+        $res2['posts'] = $posts;
+
+        $response->getBody()->write(json_encode($res2));
+//        $response->getBody()->write(json_encode(array("posts" => $posts)));
     }
 
 });
-
-
-
-
-
-
 
 
 //    @FormUrlEncoded
@@ -1363,10 +1425,10 @@ $app->post("/logs/get/all", function (Request $request, Response $response) {
             $log["time"] = $lg->getTime();
             $log["parent"] = $lg->getParent();
             $mem = array();
-            $mem['memberId'] = $log->getMember()->getMemberId();
-            $mem['fullName'] = $log->getMember()->getFullName();
-            $mem['phone'] = $log->getMember()->getPhone();
-            $mem['email'] = $log->getMember()->getEmail();
+            $mem['memberId'] = $lg->getMember()->getMemberId();
+            $mem['fullName'] = $lg->getMember()->getFullName();
+            $mem['phone'] = $lg->getMember()->getPhone();
+            $mem['email'] = $lg->getMember()->getEmail();
             $log['member'] = $mem;
             array_push($logs, $log);
         }
@@ -1410,15 +1472,15 @@ $app->post("/messages/get/all", function (Request $request, Response $response) 
         $messages = array();
         foreach ($msgs as $msg) {
             $message = array();
-            $message["logId"] = $msg->getLogId();
+            $message["logId"] = $msg->getMessageId();
             $message["content"] = $msg->getContent();
             $message["time"] = $msg->getTime();
             $message["parent"] = $msg->getParent();
             $mem = array();
-            $mem['memberId'] = $message->getMember()->getMemberId();
-            $mem['fullName'] = $message->getMember()->getFullName();
-            $mem['phone'] = $message->getMember()->getPhone();
-            $mem['email'] = $message->getMember()->getEmail();
+            $mem['memberId'] = $msg->getMember()->getMemberId();
+            $mem['fullName'] = $msg->getMember()->getFullName();
+            $mem['phone'] = $msg->getMember()->getPhone();
+            $mem['email'] = $msg->getMember()->getEmail();
             $message['member'] = $mem;
             array_push($messages, $message);
         }

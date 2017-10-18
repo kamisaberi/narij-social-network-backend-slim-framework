@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Created by PhpStorm.
  * User: kami
@@ -10,9 +11,24 @@ class DataAccess
 {
     public $connection;
 
+    private $host;
+    private $user;
+    private $password;
+    private $database;
+
+    function __construct()
+    {
+        $parse = parse_ini_file(__DIR__ . "/../../configuration/connection.ini", FALSE);
+        $this->host = $parse['host'];
+        $this->user = $parse['user'];
+        $this->password = $parse['password'];
+        $this->database = $parse['database'];
+    }
+
+
     public function open()
     {
-        $this->connection = mysqli_connect("127.0.0.1", "root", "", "NARIJ_00007");
+        $this->connection = mysqli_connect($this->host, $this->user, $this->password, $this->database);
     }
 
     public function exec($sql)

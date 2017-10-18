@@ -32,7 +32,7 @@ class LoginDataSource
     public function getMemberIdBasedOnToken($token)
     {
         $sql = "SELECT Member FROM Logins WHERE Logins.Token='$token' ORDER BY Logins.LoginId DESC LIMIT 1";
-        echo $sql;
+//        echo $sql;
         $result = $this->da->execSelect($sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {

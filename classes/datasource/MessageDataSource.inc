@@ -45,7 +45,7 @@ Members.Phone,
 Members.Email,
 Members.`Password`
 FROM Messages INNER JOIN Members On Messages.Member = Members.MemberId WHERE Messages.ObjectType='Member' AND  Object='$memberId'";
-
+echo "<br>$sql<br>";
         $result = $this->da->execSelect($sql);
         $messages = array();
         if (mysqli_num_rows($result) > 0) {

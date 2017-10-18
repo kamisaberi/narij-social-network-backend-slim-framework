@@ -2,6 +2,7 @@
 
 require_once 'MediaType.inc';
 require_once 'PostCategory.inc';
+require_once 'Member.inc';
 
 /**
  *
@@ -30,7 +31,7 @@ class Post implements \JsonSerializable
      */
     private $description;
     /**
-     * @var MediaType
+     * @var string
      */
     private $mediaType;
     /**
@@ -57,11 +58,49 @@ class Post implements \JsonSerializable
      * @var array
      */
     private $properties;
-
     /**
      * @var array
      */
     private $comments;
+    /**
+     * @var Member
+     */
+    private $member;
+
+    /**
+     * Post constructor.
+     */
+    public function __construct()
+    {
+        $this->postId = 0;
+        $this->mediaType = "";
+        $this->createTime = '';
+        $this->editTime = '';
+        $this->deleteTime = '';
+        $this->deleted = false;
+        $this->postCategory = new PostCategory();
+        $this->properties = array();
+        $this->comments = array();
+        $this->title = "";
+        $this->description = "";
+        $this->member = new Member();
+    }
+
+    /**
+     * @return string
+     */
+    public function getMediaType()
+    {
+        return $this->mediaType;
+    }
+
+    /**
+     * @param string $mediaType
+     */
+    public function setMediaType($mediaType)
+    {
+        $this->mediaType = $mediaType;
+    }
 
     /**
      * @return array
@@ -80,21 +119,19 @@ class Post implements \JsonSerializable
     }
 
     /**
-     * Post constructor.
+     * @return Member
      */
-    public function __construct()
+    public function getMember()
     {
-        $this->postId = 0;
-        $this->mediaType = new MediaType();
-        $this->createTime = '';
-        $this->editTime = '';
-        $this->deleteTime = '';
-        $this->deleted = false;
-        $this->postCategory = new PostCategory();
-        $this->properties = array();
-        $this->comments = array();
-        $this->title = "";
-        $this->description = "";
+        return $this->member;
+    }
+
+    /**
+     * @param Member $member
+     */
+    public function setMember($member)
+    {
+        $this->member = $member;
     }
 
     /**
@@ -161,21 +198,6 @@ class Post implements \JsonSerializable
         $this->postId = $postId;
     }
 
-    /**
-     * @return MediaType
-     */
-    public function getMediaType()
-    {
-        return $this->mediaType;
-    }
-
-    /**
-     * @param MediaType $mediaType
-     */
-    public function setMediaType($mediaType)
-    {
-        $this->mediaType = $mediaType;
-    }
 
     /**
      * @return string

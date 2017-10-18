@@ -44,8 +44,10 @@ Members.FullName,
 Members.Phone,
 Members.Email,
 Members.`Password`
-FROM `Logs` INNER JOIN Members On `Logs`.Member = Members.MemberId WHERE `Logs`.ObjectType='Member' AND  Object='$memberId'";
+FROM `Logs` INNER JOIN Members On `Logs`.Member = Members.MemberId";
 
+
+//        echo nl2br("\n$sql\n");
         $result = $this->da->execSelect($sql);
         $logs = array();
         if (mysqli_num_rows($result) > 0) {

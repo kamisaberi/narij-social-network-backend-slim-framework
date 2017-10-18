@@ -37,7 +37,7 @@ class MemberDataSource
         $memberId = $lds->getMemberIdBasedOnToken($token);
         $lds->close();
 
-        $sql = "SELECT * FROM NARIJ_00003.Members WHERE Members.MemberId={$memberId}";
+        $sql = "SELECT * FROM Members WHERE Members.MemberId={$memberId}";
         $result = $this->da->execSelect($sql);
         $member = new Member();
 
@@ -57,7 +57,7 @@ class MemberDataSource
 
     public function getProfile($memberId)
     {
-        $sql = "SELECT * FROM NARIJ_00003.Members WHERE Members.MemberId={$memberId}";
+        $sql = "SELECT * FROM Members WHERE Members.MemberId={$memberId}";
         $result = $this->da->execSelect($sql);
         $member = new Member();
 
@@ -89,7 +89,7 @@ class MemberDataSource
 
     public function updateProfileFullName($phone, $fullName)
     {
-        $sql = "UPDATE NARIJ_00005.Members  SET Members.FullName='{$fullName}'  WHERE Members.Phone= '$phone'";
+        $sql = "UPDATE Members  SET Members.FullName='{$fullName}'  WHERE Members.Phone= '$phone'";
         $this->da->exec($sql);
         return true;
     }
@@ -111,6 +111,21 @@ class MemberDataSource
         $this->da->exec($sql);
         return true;
     }
+
+    public function getMemberIdBasedOnPhone($phone)
+    {
+        $sql = "SELECT * FROM Members WHERE Phone='$phone'";
+        //echo $sql;
+        $result = $this->da->execSelect($sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                return $row["MemberId"];
+            }
+        } else {
+            return 0;
+        }
+    }
+
 
     public function updateProfileLocation($token, $location)
     {
@@ -135,7 +150,7 @@ class MemberDataSource
 
     public function checkVerificationCode(Member $member)
     {
-        $sql = "SELECT * FROM NARIJ_00005.Members WHERE Members.Phone = '{$member->getPhone()}' AND Members.VerificationCode = '{$member->getVerificationCode()}' ";
+        $sql = "SELECT * FROM Members WHERE Members.Phone = '{$member->getPhone()}' AND Members.VerificationCode = '{$member->getVerificationCode()}' ";
         //echo $sql;
         $result = $this->da->execSelect($sql);
         if (mysqli_num_rows($result) > 0) {
