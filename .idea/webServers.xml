@@ -10,6 +10,14 @@
           <option name="port" value="21" />
         </fileTransfer>
       </webServer>
+      <webServer id="e85622b7-66de-4c45-bea2-2982ef5e9aa6" name="NarijWebService" url="http://narij.com">
+        <fileTransfer host="narij.com" port="21" rootFolder="/public_html/NarijWebService">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

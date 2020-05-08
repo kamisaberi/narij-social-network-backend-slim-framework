@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="NARIJ_00009@localhost" uuid="a0791446-094c-44f2-8514-ae0a7dea6c38">
-      <database-info product="MySQL" version="5.6.11" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+    <data-source name="narij_00001@localhost" uuid="d1d19908-a310-4ed9-87b9-d2bc0510c6fe">
+      <database-info product="MySQL" version="5.5.5-10.1.28-MariaDB" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.44 ( Revision: b3cda4f864902ffdde495b9df93937c3e20009be )" dbms="MARIADB" exact-version="10.1.28">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>
       </database-info>
-      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper" />
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
       <secret-storage>master_key</secret-storage>
       <user-name>root</user-name>
-      <resolve-scope>NARIJ_00009:</resolve-scope>
+      <introspection-schemas>*:@</introspection-schemas>
+      <resolve-scope>narij_00001:</resolve-scope>
+      <unqualified-resolve-schemas>narij_00001:</unqualified-resolve-schemas>
     </data-source>
   </component>
 </project>

@@ -5,83 +5,92 @@
   },
   "posts": [
     {
-      "postId": "12",
+      "postId": "1",
       "title": "\"T1\"",
       "description": "Different foods go through different metabolic pathways in the body.\\nThey can have a vastly different effect on hunger, hormones and how many calories we burn here are the 20 most weight loss friendly foods on earth, that are supported by science",
       "deleteTime": "2017-09-20 00:06:03",
       "createTime": "2017-09-20 00:06:03",
       "mediaType": "Text",
-      "editTime": "2017-10-01 09:59:01",
+      "editTime": "2018-01-27 04:03:59",
       "member": {
         "memberId": "410",
         "fullName": "fgg",
         "email": "ggg",
         "phone": "09365982333"
       },
+      "directory ": "uploads\\410\\1",
       "files": []
     },
     {
-      "postId": "13",
+      "postId": "2",
       "title": "\"T1\"",
       "description": "Licensed under the Apache License, Version 2.0 (the \"License\");\r\nyou may not use this file except in compliance with the License.\r\nYou may obtain a copy of the License at",
       "deleteTime": "2017-09-20 00:11:13",
       "createTime": "2017-09-20 00:11:13",
-      "mediaType": "Test",
-      "editTime": "2017-10-01 09:59:34",
+      "mediaType": "Text",
+      "editTime": "2018-01-27 04:05:45",
       "member": {
         "memberId": "410",
         "fullName": "fgg",
         "email": "ggg",
         "phone": "09365982333"
       },
+      "directory ": "uploads\\410\\2",
       "files": []
     },
     {
-      "postId": "14",
+      "postId": "3",
       "title": "TITLE 1",
       "description": "Unless required by applicable law or agreed to in writing, software\r\ndistributed under the License is distributed on an",
       "deleteTime": "2017-09-20 00:12:31",
       "createTime": "2017-09-20 00:12:31",
       "mediaType": "Image",
-      "editTime": "2017-10-01 09:59:37",
+      "editTime": "2018-01-27 04:04:04",
       "member": {
         "memberId": "411",
         "fullName": "reza",
         "email": "test1@yahoo.com",
         "phone": "09365892454"
       },
-      "files": []
+      "directory ": "uploads\\411\\3",
+      "files": [
+        "3339373337.jpg"
+      ]
     },
     {
-      "postId": "15",
+      "postId": "4",
       "title": "TITLE 1",
       "description": "Stroke and background color on custom Drawable should be preset by the user: too complex to determine the type of the Drawable used in order to change its color.",
       "deleteTime": "2017-09-20 00:13:10",
       "createTime": "2017-09-20 00:13:10",
       "mediaType": "Image",
-      "editTime": "2017-10-01 10:00:11",
+      "editTime": "2018-01-27 04:04:06",
       "member": {
         "memberId": "410",
         "fullName": "fgg",
         "email": "ggg",
         "phone": "09365982333"
       },
-      "files": []
+      "directory ": "uploads\\410\\4",
+      "files": [
+        "3238313139.jpg"
+      ]
     },
     {
-      "postId": "16",
+      "postId": "5",
       "title": "\"T1\"",
       "description": "Transparency has a little glitch when used with elevation, you could see shadow In the shape: more transparent the color is more visible the shadow is.",
       "deleteTime": "2017-09-20 00:15:00",
       "createTime": "2017-09-20 00:15:00",
       "mediaType": "Text",
-      "editTime": "2017-10-01 10:00:25",
+      "editTime": "2018-01-27 04:04:08",
       "member": {
         "memberId": "412",
         "fullName": "ahmad",
         "email": "ali@gmail.com",
         "phone": "09112524568"
       },
+      "directory ": "uploads\\412\\5",
       "files": []
     }
   ]

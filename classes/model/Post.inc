@@ -67,13 +67,15 @@ class Post implements \JsonSerializable
      */
     private $member;
 
+    private $liked;
+
     /**
      * Post constructor.
      */
     public function __construct()
     {
         $this->postId = 0;
-        $this->mediaType = "";
+        $this->mediaType = new MediaType();
         $this->createTime = '';
         $this->editTime = '';
         $this->deleteTime = '';
@@ -84,6 +86,23 @@ class Post implements \JsonSerializable
         $this->title = "";
         $this->description = "";
         $this->member = new Member();
+        $this->liked = false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLiked()
+    {
+        return $this->liked;
+    }
+
+    /**
+     * @param bool $liked
+     */
+    public function setLiked($liked)
+    {
+        $this->liked = $liked;
     }
 
     /**

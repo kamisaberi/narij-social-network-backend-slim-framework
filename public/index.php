@@ -774,6 +774,26 @@ $app->post("/login", function (Request $request, Response $response) {
         $res2["message"] = $res1;
         $res2['member'] = $res3;
 
+
+        $pcds = new  PostCategoryDataSource();
+        $pcds->open();
+        $pstctgs = $pcds->getPostCategories();
+        $pcds->close();
+
+
+        //TODO NEW SHOULD BE TESTED 2018.03.20
+        $postCategories = array();
+        foreach ($pstctgs as $pstctg) {
+            $postCategory = array();
+            $postCategory["postCategoryId"] = $pstctg->getPostCategoryId();
+            $postCategory["title"] = $pstctg->getTitle();
+            array_push($postCategories, $postCategory);
+        }
+
+
+
+        $res2["postCategories"] = $postCategories;
+
 //
         $response->getBody()->write(json_encode($res2));
 
@@ -832,21 +852,9 @@ $app->post("/password/create", function (Request $request, Response $response) {
 $app->post("/post/create/audio", function (Request $request, Response $response) {
 
     require_once '../classes/datasource/PostDataSource.inc';
+    require_once '../classes/datasource/LogDataSource.inc';
 
-    if (isTheseParametersAvailable(array('token'))) {
-
-        $requestData = $request->getParsedBody();
-        $token = $requestData['token'];
-
-
-        $directory = $this->get('upload_directory');
-        $uploadedFiles = $request->getUploadedFiles();
-        $uploadedFile = $uploadedFiles['file'];
-        $filename = "";
-        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-            $filename = moveUploadedFile($directory, $uploadedFile);
-        }
-
+    if (isTheseParametersAvailable(array('token', 'title', 'description', 'tags'))) {
 
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
@@ -854,27 +862,48 @@ $app->post("/post/create/audio", function (Request $request, Response $response)
         $description = $requestData['description'];
         $tags = $requestData['tags'];
 
-        $post = new Post();
-        $post->setTitle($title);
-        $post->setDescription($description);
-        $post->getMediaType()->setTitle("Audio");
-
+        $directory = $this->get('upload_directory');
+        $uploadedFiles = $request->getUploadedFiles();
+        //fgdg
+        $uploadedFile = $uploadedFiles['file'];
+        $filename = "";
 
         $lds = new LoginDataSource();
         $lds->open();
         $memberId = $lds->getMemberIdBasedOnToken($token);
         $lds->close();
 
+        $post = new Post();
+        $post->setTitle($title);
+        $post->setDescription($description);
+        $post->getMediaType()->setTitle("Audio");
 
         $pds = new PostDataSource();
         $pds->open();
-        $pds->create($post, $memberId, $tags);
+        $id = $pds->create($post, $memberId, $tags);
         $pds->close();
+
+
+        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+            $directory = $directory . DIRECTORY_SEPARATOR . $memberId . DIRECTORY_SEPARATOR . $id;
+            if (file_exists($directory) == false) {
+                mkdir($directory, 0777);
+            }
+            $filename = moveUploadedFile($directory, $uploadedFile);
+        }
+
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForCreatingAudioPost($id, $memberId);
+        $lgds->close();
+
 
         $res1 = array();
         $res1["error"] = false;
         $res1["message"] = "successful";
         $response->getBody()->write(json_encode($res1));
+
 
     }
 
@@ -887,44 +916,60 @@ $app->post("/post/create/audio", function (Request $request, Response $response)
 $app->post("/post/create/image", function (Request $request, Response $response) {
 
     require_once '../classes/datasource/PostDataSource.inc';
+    require_once '../classes/datasource/LogDataSource.inc';
 
     if (isTheseParametersAvailable(array('token', 'title', 'description', 'tags'))) {
+
+        $requestData = $request->getParsedBody();
+        $token = trim($requestData['token'], "\"");
+        $title = trim($requestData['title'], "\"");
+        $description = trim($requestData['description'], "\"");
+        $tags = trim($requestData['tags'], "\"");
 
         $directory = $this->get('upload_directory');
         $uploadedFiles = $request->getUploadedFiles();
         //fgdg
         $uploadedFile = $uploadedFiles['file'];
         $filename = "";
-        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-            $filename = moveUploadedFile($directory, $uploadedFile);
-        }
-
-        $requestData = $request->getParsedBody();
-        $token = $requestData['token'];
-        $title = $requestData['title'];
-        $description = $requestData['description'];
-        $tags = $requestData['tags'];
-
-        $post = new Post();
-        $post->setTitle($title);
-        $post->setDescription($description);
-        $post->getMediaType()->setTitle("Image");
-
 
         $lds = new LoginDataSource();
         $lds->open();
         $memberId = $lds->getMemberIdBasedOnToken($token);
         $lds->close();
 
+        $post = new Post();
+        $post->setTitle($title);
+        $post->setDescription($description);
+        $post->getMediaType()->setTitle("Image");
 
         $pds = new PostDataSource();
         $pds->open();
-        $pds->create($post, $memberId, $tags);
+        $id = $pds->create($post, $memberId, $tags);
+//        echo $id;
         $pds->close();
+
+//        $directory = $directory . "/" . $memberId . "/" . $id;
+//        mkdir($directory, 777);
+//        $filename = moveUploadedFile($directory, $uploadedFile);
+
+        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+            $directory = $directory . "/" . $memberId . "/" . $id;
+            if (file_exists($directory) == false) {
+                mkdir($directory, 0777);
+            }
+            $filename = moveUploadedFile($directory, $uploadedFile);
+        }
+
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForCreatingImagePost($id, $memberId);
+        $lgds->close();
+
 
         $res1 = array();
         $res1["error"] = false;
-        $res1["message"] = "successful";
+        $res1["message"] = "succesful";
         $response->getBody()->write(json_encode($res1));
 
 
@@ -939,13 +984,15 @@ $app->post("/post/create/image", function (Request $request, Response $response)
 $app->post("/post/create/text", function (Request $request, Response $response) {
 
     require_once '../classes/datasource/PostDataSource.inc';
+    require_once '../classes/datasource/LogDataSource.inc';
+
     if (isTheseParametersAvailable(array('token', 'title', 'description', 'tags'))) {
 
         $requestData = $request->getParsedBody();
-        $token = $requestData['token'];
-        $title = $requestData['title'];
-        $description = $requestData['description'];
-        $tags = $requestData['tags'];
+        $token = trim($requestData['token'], "\"");
+        $title = trim($requestData['title'], "\"");
+        $description = trim($requestData['description'], "\"");
+        $tags = trim($requestData['tags'], "\"");
 
         $post = new Post();
         $post->setTitle($title);
@@ -961,8 +1008,14 @@ $app->post("/post/create/text", function (Request $request, Response $response) 
 
         $pds = new PostDataSource();
         $pds->open();
-        $pds->create($post, $memberId, $tags);
+        $id = $pds->create($post, $memberId, $tags);
         $pds->close();
+
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForCreatingTextPost($id, $memberId);
+        $lgds->close();
 
         $res1 = array();
         $res1["error"] = false;
@@ -980,21 +1033,9 @@ $app->post("/post/create/text", function (Request $request, Response $response) 
 $app->post("/post/create/video", function (Request $request, Response $response) {
 
     require_once '../classes/datasource/PostDataSource.inc';
+    require_once '../classes/datasource/LogDataSource.inc';
 
     if (isTheseParametersAvailable(array('token', 'title', 'description', 'tags'))) {
-
-        $requestData = $request->getParsedBody();
-        $token = $requestData['token'];
-
-
-        $directory = $this->get('upload_directory');
-        $uploadedFiles = $request->getUploadedFiles();
-        $uploadedFile = $uploadedFiles['file'];
-        $filename = "";
-        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-            $filename = moveUploadedFile($directory, $uploadedFile);
-        }
-
 
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
@@ -1002,22 +1043,42 @@ $app->post("/post/create/video", function (Request $request, Response $response)
         $description = $requestData['description'];
         $tags = $requestData['tags'];
 
-        $post = new Post();
-        $post->setTitle($title);
-        $post->setDescription($description);
-        $post->getMediaType()->setTitle("Video");
-
+        $directory = $this->get('upload_directory');
+        $uploadedFiles = $request->getUploadedFiles();
+        //fgdg
+        $uploadedFile = $uploadedFiles['file'];
+        $filename = "";
 
         $lds = new LoginDataSource();
         $lds->open();
         $memberId = $lds->getMemberIdBasedOnToken($token);
         $lds->close();
 
+        $post = new Post();
+        $post->setTitle($title);
+        $post->setDescription($description);
+        $post->getMediaType()->setTitle("Video");
 
         $pds = new PostDataSource();
         $pds->open();
-        $pds->create($post, $memberId, $tags);
+        $id = $pds->create($post, $memberId, $tags);
         $pds->close();
+
+
+        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+            $directory = $directory . DIRECTORY_SEPARATOR . $memberId . DIRECTORY_SEPARATOR . $id;
+            if (file_exists($directory) == false) {
+                mkdir($directory, 0777);
+            }
+            $filename = moveUploadedFile($directory, $uploadedFile);
+        }
+
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForCreatingVideoPost($id, $memberId);
+        $lgds->close();
+
 
         $res1 = array();
         $res1["error"] = false;
@@ -1081,26 +1142,49 @@ $app->post("/post/get", function (Request $request, Response $response) {
 
 //    @FormUrlEncoded
 //    @POST("post/like")
-//    Call < WebServiceMessage> like(@Field("token") String token,@Field("postId") long postId);
+//    Call < WebServiceMessage> like(@Field("token") String token,@Field("postId") long postId,@Field("value") boolean value);
 
 $app->post("/post/like", function (Request $request, Response $response) {
 
 
     require_once '../classes/datasource/LikeDataSource.inc';
+    require_once '../classes/datasource/LogDataSource.inc';
 
-    if (isTheseParametersAvailable(array('token', 'postId'))) {
+    if (isTheseParametersAvailable(array('token', 'postId', 'value'))) {
         $requestData = $request->getParsedBody();
         $postId = $requestData['postId'];
         $token = $requestData['token'];
+        $value = $requestData['value'];
 
+
+        $lds = new LoginDataSource();
+        $lds->open();
+        $memberId = $lds->getMemberIdBasedOnToken($token);
+        $lds->close();
+
+
+        $msg = "";
+
+        if ($value == 0) {
+            $msg .= "22";
+        } else {
+            $msg .= "11";
+        }
         $lds = new LikeDataSource();
         $lds->open();
-        $lds->like($postId, $token);
+        $lds->like($postId, $token, $value);
         $lds->close();
+
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForLikePost($postId, $memberId);
+        $lgds->close();
+
 
         $res1 = array();
         $res1["error"] = false;
-        $res1["message"] = "successful";
+        $res1["message"] = $msg;
         $response->getBody()->write(json_encode($res1));
     }
 
@@ -1198,7 +1282,6 @@ $app->post("/posts/viral", function (Request $request, Response $response) {
     }
 
 
-
 });
 
 
@@ -1211,8 +1294,12 @@ $app->post("/posts/get/all", function (Request $request, Response $response) {
     require_once '../classes/datasource/PostDataSource.inc';
     if (isTheseParametersAvailable(array('token'))) {
         $requestData = $request->getParsedBody();
-        $token = $requestData['token'];
+        $token = trim($requestData['token'], "\"");
         $psts = array();
+
+        $directory = $this->get('upload_directory');
+
+
         $pds = new PostDataSource();
         $pds->open();
         $psts = $pds->getPosts();
@@ -1226,12 +1313,32 @@ $app->post("/posts/get/all", function (Request $request, Response $response) {
             $post["createTime"] = $pst->getCreateTime();
             $post["mediaType"] = $pst->getMediaType();
             $post["editTime"] = $pst->getEditTime();
+            $post["liked"] = $pst->isLiked();
             $mem = array();
             $mem['memberId'] = $pst->getMember()->getMemberId();
             $mem['fullName'] = $pst->getMember()->getFullName();
             $mem['email'] = $pst->getMember()->getEmail();
             $mem['phone'] = $pst->getMember()->getPhone();
             $post["member"] = $mem;
+
+
+            $files = array();
+            $fs = array();
+
+            $dir = $directory . DIRECTORY_SEPARATOR . $pst->getMember()->getMemberId() . DIRECTORY_SEPARATOR . $pst->getPostId();
+            $post["directory "] = $dir;
+            //echo $directory ;
+            if (file_exists($dir) == true) {
+                //echo $directory ;s
+                $fs = scandir($dir);
+                foreach ($fs as $f) {
+                    if ($f != "." && $f != "..") {
+                        $files[] = $f;
+                    }
+                }
+            }
+            $post['files'] = $files;
+
 
             array_push($posts, $post);
         }
@@ -1256,6 +1363,9 @@ $app->post("/posts/get/all", function (Request $request, Response $response) {
 $app->post("/post/share", function (Request $request, Response $response) {
 
     require_once '../classes/datasource/ShareDataSource.inc';
+    require_once '../classes/datasource/LoginDataSource.inc';
+    require_once '../classes/datasource/LogDataSource.inc';
+
     if (isTheseParametersAvailable(array('token', 'post', 'receiver'))) {
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
@@ -1267,6 +1377,19 @@ $app->post("/post/share", function (Request $request, Response $response) {
         $sds->open();
         $res = $sds->share($token, $receiver, $post);
         $sds->close();
+
+
+        $lds = new LoginDataSource();
+        $lds->open();
+        $memberId = $lds->getMemberIdBasedOnToken($token);
+        $lds->close();
+
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForSharePost($post, $memberId, $receiver);
+        $lgds->close();
+
 
         $res1 = array();
         $res1["error"] = false;
@@ -1297,6 +1420,18 @@ $app->post("/member/get", function (Request $request, Response $response) {
             $lds->open();
             $memberId = $lds->getMemberIdBasedOnToken($token);
             $lds->close();
+        }
+
+
+        if ($memberId != 0) {
+            $lds = new LoginDataSource();
+            $lds->open();
+            $memberId1 = $lds->getMemberIdBasedOnToken($token);
+            $lds->close();
+            $lgds = new LogDataSource();
+            $lgds->open();
+            $lgds->createLogForSeeMemberProfile($memberId, $memberId1);
+            $lgds->close();
         }
 
         $mds = new MemberDataSource();
@@ -1597,11 +1732,20 @@ $app->post("/followers/confirm", function (Request $request, Response $response)
 
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
-        $memberId = $requestData['token'];
+        $memberId = $requestData['memberId'];
+
+
         $lds = new LoginDataSource();
         $lds->open();
         $object = $lds->getMemberIdBasedOnToken($token);
         $lds->close();
+
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForConfirmFollowRequest($memberId, $object);
+        $lgds->close();
+
 
         $fds = new FollowDataSource();
         $fds->open();
@@ -1629,11 +1773,20 @@ $app->post("/followers/reject", function (Request $request, Response $response) 
     if (isTheseParametersAvailable(array('token', 'memberId'))) {
         $requestData = $request->getParsedBody();
         $token = $requestData['token'];
-        $memberId = $requestData['token'];
+        $memberId = $requestData['memberId'];
+
+
         $lds = new LoginDataSource();
         $lds->open();
         $object = $lds->getMemberIdBasedOnToken($token);
         $lds->close();
+
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForRejectFollowRequest($memberId, $object);
+        $lgds->close();
+
 
         $fds = new FollowDataSource();
         $fds->open();
@@ -1777,6 +1930,13 @@ $app->post("/followings/unfollow", function (Request $request, Response $respons
         $memberId = $lds->getMemberIdBasedOnToken($token);
         $lds->close();
 
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForUnfollow($object, $memberId);
+        $lgds->close();
+
+
         $fds = new FollowDataSource();
         $fds->open();
         $res = $fds->follow($object, $memberId);
@@ -1809,6 +1969,13 @@ $app->post("/followings/follow", function (Request $request, Response $response)
         $lds->open();
         $memberId = $lds->getMemberIdBasedOnToken($token);
         $lds->close();
+
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForFollow($object, $memberId);
+        $lgds->close();
+
 
         $fds = new FollowDataSource();
         $fds->open();
@@ -1847,6 +2014,12 @@ $app->post("/followings/send/request", function (Request $request, Response $res
         $lds->open();
         $memberId = $lds->getMemberIdBasedOnToken($token);
         $lds->close();
+
+        $lgds = new LogDataSource();
+        $lgds->open();
+        $lgds->createLogForRequest($object, $memberId);
+        $lgds->close();
+
 
         $fds = new FollowDataSource();
         $fds->open();

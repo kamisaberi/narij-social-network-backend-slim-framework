@@ -281,10 +281,11 @@ Members.`Password`,
 Members.MemberType,
 Members.VerificationCode,
 Members.Active,
-Members.Parent
+Members.Parent,
+(SELECT COUNT(LikeId) FROM Likes WHERE Likes.Member = 410 AND Likes.Post = Posts.PostId) as Liked
 FROM
 Posts
-INNER JOIN Members ON Members.MemberId = Posts.Member ";
+INNER JOIN Members ON Members.MemberId = Posts.Member ORDER By  Posts.PostId DESC";
         $result = $this->da->execSelect($sql);
         $posts = array();
         if (mysqli_num_rows($result) > 0) {
@@ -297,6 +298,13 @@ INNER JOIN Members ON Members.MemberId = Posts.Member ";
                 $post->setCreateTime($row['CreateTime']);
                 $post->setMediaType($row['MediaType']);
                 $post->setEditTime($row['EditTime']);
+
+                if ($row['Liked'] == 0) {
+                    $post->setLiked(false);
+                } else {
+                    $post->setLiked(true);
+                }
+
                 $member = new Member();
                 $member->setMemberId($row['MemberId']);
                 $member->setFullName($row['FullName']);
@@ -313,7 +321,7 @@ INNER JOIN Members ON Members.MemberId = Posts.Member ";
 
     public function create(Post $post, $memberId, $tags)
     {
-        $sql = "INSERT INTO Posts (Title, Descruption, MediaType,Member) VALUES ('{$post->getTitle()}','{$post->getDescription()}','{$post->getMediaType()->getTitle()}', '$memberId')";
+        $sql = "INSERT INTO Posts (Title, Description, MediaType,Member) VALUES ('{$post->getTitle()}','{$post->getDescription()}','{$post->getMediaType()->getTitle()}', '$memberId')";
 //        echo $sql;
         $id = $this->da->exec($sql);
 //        $this->assignPostToMember($id, $memberId);
@@ -324,6 +332,7 @@ INNER JOIN Members ON Members.MemberId = Posts.Member ";
         $tds->open();
         $tds->assignTagsToPost($tags, $id);
         $tds->close();
+        return $id;
 
     }
 

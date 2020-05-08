@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ .  '/../dataaccess/DataAccess.inc';
-require_once __DIR__ .  '/../model/Login.inc';
+require_once __DIR__ . '/../dataaccess/DataAccess.inc';
+require_once __DIR__ . '/../model/Login.inc';
 require_once 'LoginDataSource.inc';
 
 /**
@@ -29,7 +29,7 @@ class LikeDataSource
         $this->da->close();
     }
 
-    public function like($postId, $token)
+    public function like($postId, $token, $value)
     {
 
         $lds = new LoginDataSource();
@@ -37,7 +37,12 @@ class LikeDataSource
         $memberId = $lds->getMemberIdBasedOnToken($token);
         $lds->close();
         $id = 0;
-        $sql = "INSERT INTO Likes ( `Member`,`Post`, `Token` ) VALUES ('{$memberId}' , '{$postId}', '{$token}')";
+
+        if ($value == 1) {
+            $sql = "INSERT INTO Likes ( `Member`,`Post`, `Token` ) VALUES ('{$memberId}' , '{$postId}', '{$token}')";
+        } else {
+            $sql = "DELETE FROM  Likes WHERE `Member` = {$memberId} AND `Post` = {$postId}";
+        }
         $id = $this->da->exec($sql);
         return $id;
     }

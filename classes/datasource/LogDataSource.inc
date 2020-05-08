@@ -70,4 +70,95 @@ FROM `Logs` INNER JOIN Members On `Logs`.Member = Members.MemberId";
     }
 
 
+    public function createLogForLikePost($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Post', '$memberId Liked $object')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForFollow($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Member', '$memberId Followed $object')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForUnfollow($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Member', '$memberId Unfollowed $object')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForReject($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Member', '$memberId Rejected $object')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForCreatingTextPost($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Post', '$memberId Cerates $object Text Post')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForCreatingPost($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Post', '$memberId Cerates $object Post')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForCreatingImagePost($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Post', '$memberId Cerates $object Image Post')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForCreatingAudioPost($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Post', '$memberId Cerates $object Audio Post')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForCreatingVideoPost($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Post', '$memberId Cerates $object Video Post')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForSeeMemberProfile($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Member', '$memberId Saw $object Profile')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForSharePost($object, $memberId, $receiver)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Post', '$memberId shared $object To $receiver')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForConfirmFollowRequest($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Member', '$memberId Confirmed $object Follow Request')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForRejectFollowRequest($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Member', '$memberId Rejected $object Follow Request')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForUnfollowFollowRequest($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Member', '$memberId UnFollowed $object Follow Request')";
+        $this->da->exec($sql);
+    }
+
+    public function createLogForRequest($object, $memberId)
+    {
+        $sql = "INSERT INTO Logs (Member, Object, ObjectType, Content) VALUES ('$memberId','$object', 'Member', '$memberId Requested $object Follow Request')";
+        $this->da->exec($sql);
+    }
+
+
 }

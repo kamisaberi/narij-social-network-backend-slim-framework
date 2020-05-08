@@ -2,6 +2,13 @@
 <project version="4">
   <component name="PublishConfigData" serverName="eris">
     <serverData>
+      <paths name="NarijWebService">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="NetworkCMS">
         <serverdata>
           <mappings>
